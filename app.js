@@ -1,4 +1,4 @@
-// Parquet Cycling Website JavaScript - Containers.bg inspired functionality
+// Parquet Cycling Website JavaScript - Containers.bg inspired functionality with enhanced animations
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormAnimations();
     initButtonAnimations();
     initStaggeredAnimations();
+    initParallaxEffects();
+    initFloatingAnimations();
+    initImageRevealAnimations();
 });
 
 // Mobile Navigation
@@ -26,6 +29,18 @@ function initMobileNavigation() {
             e.stopPropagation();
             nav.classList.toggle('active');
             navToggle.classList.toggle('active');
+            
+            // Animate hamburger menu
+            const spans = navToggle.querySelectorAll('span');
+            if (nav.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         });
 
         // Close menu when clicking on links
@@ -33,6 +48,12 @@ function initMobileNavigation() {
             link.addEventListener('click', function(e) {
                 nav.classList.remove('active');
                 navToggle.classList.remove('active');
+                
+                // Reset hamburger animation
+                const spans = navToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
             });
         });
 
@@ -41,12 +62,18 @@ function initMobileNavigation() {
             if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
                 nav.classList.remove('active');
                 navToggle.classList.remove('active');
+                
+                // Reset hamburger animation
+                const spans = navToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
             }
         });
     }
 }
 
-// FAQ Accordion
+// FAQ Accordion with enhanced animations
 function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     
@@ -59,7 +86,7 @@ function initFAQ() {
                 e.preventDefault();
                 const isActive = item.classList.contains('active');
                 
-                // Close all other items
+                // Close all other items with animation
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item) {
                         otherItem.classList.remove('active');
@@ -70,20 +97,28 @@ function initFAQ() {
                     }
                 });
                 
-                // Toggle current item
+                // Toggle current item with enhanced animation
                 if (isActive) {
                     item.classList.remove('active');
                     answer.style.maxHeight = '0';
                 } else {
                     item.classList.add('active');
                     answer.style.maxHeight = answer.scrollHeight + 'px';
+                    
+                    // Add subtle bounce effect
+                    setTimeout(() => {
+                        answer.style.transform = 'scale(1.01)';
+                        setTimeout(() => {
+                            answer.style.transform = 'scale(1)';
+                        }, 150);
+                    }, 100);
                 }
             });
         }
     });
 }
 
-// Contact Form Handling
+// Contact Form Handling with enhanced validation
 function initContactForm() {
     const form = document.getElementById('contact-form');
     
@@ -159,6 +194,12 @@ function showFieldError(fieldName, message) {
     if (field) {
         field.classList.add('error');
         
+        // Add shake animation
+        field.style.animation = 'shake 0.4s ease-in-out';
+        setTimeout(() => {
+            field.style.animation = '';
+        }, 400);
+        
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.textContent = message;
@@ -182,10 +223,16 @@ function submitForm(form) {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
         submitButton.classList.remove('loading');
+        
+        // Add success animation to form
+        form.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+            form.style.transform = 'scale(1)';
+        }, 200);
     }, 2000);
 }
 
-// Notification system
+// Enhanced notification system
 function showNotification(message, type = 'info') {
     // Remove existing notifications
     const existingNotification = document.querySelector('.notification');
@@ -203,10 +250,18 @@ function showNotification(message, type = 'info') {
         info: '#3b82f6'
     };
     
+    const icons = {
+        error: '⚠️',
+        success: '✅',
+        info: 'ℹ️'
+    };
+    
     const bgColor = colors[type] || colors.info;
+    const icon = icons[type] || icons.info;
     
     notification.innerHTML = `
         <div class="notification__content">
+            <span class="notification__icon">${icon}</span>
             <span class="notification__message">${message}</span>
             <button class="notification__close" onclick="this.parentElement.parentElement.remove()">×</button>
         </div>
@@ -220,12 +275,13 @@ function showNotification(message, type = 'info') {
         background: ${bgColor};
         color: white;
         padding: 16px 20px;
-        border-radius: 8px;
+        border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         z-index: 1001;
         max-width: 400px;
         animation: slideInRight 0.3s ease-out;
         font-weight: 500;
+        backdrop-filter: blur(10px);
     `;
     
     // Ensure animation styles exist
@@ -255,11 +311,19 @@ function ensureNotificationStyles() {
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
             }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
             .notification__content { 
                 display: flex; 
                 align-items: center; 
-                justify-content: space-between; 
                 gap: 12px; 
+            }
+            .notification__icon {
+                font-size: 18px;
+                flex-shrink: 0;
             }
             .notification__close { 
                 background: none; 
@@ -273,6 +337,8 @@ function ensureNotificationStyles() {
                 min-width: 24px;
                 opacity: 0.8;
                 transition: opacity 0.2s;
+                margin-left: auto;
+                flex-shrink: 0;
             }
             .notification__close:hover {
                 opacity: 1;
@@ -301,6 +367,10 @@ function initStatsCounter() {
                 statContainers.forEach((stat, index) => {
                     setTimeout(() => {
                         stat.classList.add('animate');
+                        stat.style.transform = 'translateY(0) scale(1.05)';
+                        setTimeout(() => {
+                            stat.style.transform = 'translateY(0) scale(1)';
+                        }, 200);
                     }, index * 150);
                 });
                 
@@ -354,7 +424,7 @@ function animateCounter(element) {
     update();
 }
 
-// Smooth Scrolling
+// Enhanced Smooth Scrolling
 function initSmoothScrolling() {
     const links = document.querySelectorAll('a[href^="#"]');
     
@@ -372,13 +442,36 @@ function initSmoothScrolling() {
                 const headerHeight = header ? header.offsetHeight : 70;
                 const targetPosition = targetElement.offsetTop - headerHeight - 20;
                 
-                window.scrollTo({
-                    top: Math.max(0, targetPosition),
-                    behavior: 'smooth'
-                });
+                // Add smooth scroll with easing
+                smoothScrollTo(Math.max(0, targetPosition), 800);
             }
         });
     });
+}
+
+function smoothScrollTo(target, duration) {
+    const start = window.pageYOffset;
+    const distance = target - start;
+    let currentTime = 0;
+    const increment = 20;
+    
+    function animateScroll() {
+        currentTime += increment;
+        const val = easeInOutQuad(currentTime, start, distance, duration);
+        window.scrollTo(0, val);
+        if (currentTime < duration) {
+            requestAnimationFrame(animateScroll);
+        }
+    }
+    
+    animateScroll();
+}
+
+function easeInOutQuad(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return c / 2 * t * t + b;
+    t--;
+    return -c / 2 * (t * (t - 2) - 1) + b;
 }
 
 // Scroll to section function (for buttons)
@@ -389,14 +482,11 @@ function scrollToSection(sectionId) {
         const headerHeight = header ? header.offsetHeight : 70;
         const targetPosition = element.offsetTop - headerHeight - 20;
         
-        window.scrollTo({
-            top: Math.max(0, targetPosition),
-            behavior: 'smooth'
-        });
+        smoothScrollTo(Math.max(0, targetPosition), 800);
     }
 }
 
-// Header scroll effect
+// Enhanced header scroll effect
 function initHeaderScroll() {
     const header = document.querySelector('.header');
     let lastScrollY = 0;
@@ -406,13 +496,22 @@ function initHeaderScroll() {
         const currentScrollY = window.scrollY;
         
         if (currentScrollY > 50) {
-            header.style.background = 'rgba(44, 62, 80, 0.98)';
-            header.style.backdropFilter = 'blur(10px)';
-            header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+            header.style.background = 'rgba(44, 85, 48, 0.98)';
+            header.style.backdropFilter = 'blur(15px)';
+            header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.15)';
+            header.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
         } else {
-            header.style.background = '#2c3e50';
+            header.style.background = '#2c5530';
             header.style.backdropFilter = 'none';
             header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            header.style.borderBottom = 'none';
+        }
+        
+        // Hide/show header on scroll
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            header.style.transform = 'translateY(0)';
         }
         
         lastScrollY = currentScrollY;
@@ -429,17 +528,17 @@ function initHeaderScroll() {
     window.addEventListener('scroll', requestTick);
 }
 
-// Scroll animations for elements
+// Enhanced scroll animations for elements
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll(
-        '.contact-item'
+        '.contact-item, .service__image-placeholder'
     );
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.style.transform = 'translateY(0) scale(1)';
                 entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
             }
         });
@@ -451,13 +550,13 @@ function initScrollAnimations() {
     // Set initial state
     animatedElements.forEach(element => {
         element.style.opacity = '0';
-        element.style.transform = 'translateY(40px)';
+        element.style.transform = 'translateY(40px) scale(0.95)';
         element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
         observer.observe(element);
     });
 }
 
-// Form animations and interactions
+// Enhanced form animations and interactions
 function initFormAnimations() {
     const formControls = document.querySelectorAll('.form-control');
     
@@ -467,10 +566,12 @@ function initFormAnimations() {
             this.parentElement.classList.add('focused');
             this.style.transform = 'scale(1.02)';
             this.style.transition = 'all 0.2s ease-out';
+            this.style.boxShadow = '0 0 0 3px rgba(249, 194, 60, 0.2)';
         });
         
         control.addEventListener('blur', function() {
             this.style.transform = 'scale(1)';
+            this.style.boxShadow = '';
             if (!this.value.trim()) {
                 this.parentElement.classList.remove('focused');
             }
@@ -485,14 +586,17 @@ function initFormAnimations() {
             }
         });
         
-        // Real-time validation
+        // Real-time validation with animations
         control.addEventListener('input', function() {
             if (this.classList.contains('error')) {
                 // Remove error state if user starts typing
                 this.classList.remove('error');
                 const errorMessage = this.parentElement.querySelector('.error-message');
                 if (errorMessage) {
-                    errorMessage.remove();
+                    errorMessage.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        errorMessage.remove();
+                    }, 300);
                 }
             }
         });
@@ -504,11 +608,41 @@ function initFormAnimations() {
     });
 }
 
-// Enhanced button interactions
+// Enhanced button interactions with ripple effect
 function initButtonAnimations() {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(button => {
+        // Add ripple effect
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                pointer-events: none;
+            `;
+            
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+        
         button.addEventListener('mouseenter', function() {
             if (!this.disabled && !this.closest('.service-card')) {
                 this.style.transform = 'translateY(-2px)';
@@ -539,14 +673,34 @@ function initButtonAnimations() {
             }
         });
     });
+    
+    // Add ripple animation to stylesheet
+    if (!document.getElementById('ripple-styles')) {
+        const style = document.createElement('style');
+        style.id = 'ripple-styles';
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
-// Intersection Observer for staggered animations
+// Enhanced intersection Observer for staggered animations
 function initStaggeredAnimations() {
     const featureGroups = document.querySelectorAll('.features-grid .feature');
     const serviceGroups = document.querySelectorAll('.services-grid .service');
     const stepGroups = document.querySelectorAll('.process-steps .step');
     const serviceCards = document.querySelectorAll('.service-card');
+    const pricingCards = document.querySelectorAll('.pricing-card');
     
     const staggerObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
@@ -555,8 +709,19 @@ function initStaggeredAnimations() {
                 
                 setTimeout(() => {
                     entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transform = 'translateY(0) scale(1)';
                     entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    
+                    // Add extra bounce for service cards
+                    if (entry.target.classList.contains('service-card') || 
+                        entry.target.classList.contains('pricing-card')) {
+                        setTimeout(() => {
+                            entry.target.style.transform = 'translateY(0) scale(1.05)';
+                            setTimeout(() => {
+                                entry.target.style.transform = 'translateY(0) scale(1)';
+                            }, 150);
+                        }, 200);
+                    }
                 }, delay);
                 
                 staggerObserver.unobserve(entry.target);
@@ -567,11 +732,114 @@ function initStaggeredAnimations() {
         rootMargin: '0px 0px -10% 0px'
     });
     
-    [...featureGroups, ...serviceGroups, ...stepGroups, ...serviceCards].forEach(element => {
+    [...featureGroups, ...serviceGroups, ...stepGroups, ...serviceCards, ...pricingCards].forEach(element => {
         element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
+        element.style.transform = 'translateY(30px) scale(0.95)';
         staggerObserver.observe(element);
     });
+}
+
+// Parallax effects for background images
+function initParallaxEffects() {
+    const parallaxElements = document.querySelectorAll(
+        '.hero__background, .services__background, .stats__background'
+    );
+    
+    let ticking = false;
+    
+    function updateParallax() {
+        const scrollTop = window.pageYOffset;
+        
+        parallaxElements.forEach(element => {
+            const rate = scrollTop * -0.5;
+            element.style.transform = `translate3d(0, ${rate}px, 0)`;
+        });
+        
+        ticking = false;
+    }
+    
+    function requestParallaxTick() {
+        if (!ticking && window.innerWidth > 768) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    }
+    
+    // Only enable parallax on larger screens
+    if (window.innerWidth > 768) {
+        window.addEventListener('scroll', requestParallaxTick);
+    }
+}
+
+// Floating animations for icons and illustrations
+function initFloatingAnimations() {
+    const floatingElements = document.querySelectorAll(
+        '.service__icon, .step__illustration, .pricing-card__illustration'
+    );
+    
+    floatingElements.forEach((element, index) => {
+        // Stagger the animation start
+        element.style.animationDelay = `${index * 0.2}s`;
+        element.style.animation = 'float 3s ease-in-out infinite';
+    });
+    
+    // Add floating animation to stylesheet
+    if (!document.getElementById('floating-styles')) {
+        const style = document.createElement('style');
+        style.id = 'floating-styles';
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Image reveal animations
+function initImageRevealAnimations() {
+    const imageElements = document.querySelectorAll('.service__image-placeholder');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'scale(1)';
+                entry.target.style.animation = 'imageReveal 0.8s ease-out forwards';
+                
+                imageObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.3
+    });
+    
+    imageElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'scale(0.8)';
+        element.style.transition = 'all 0.8s ease-out';
+        imageObserver.observe(element);
+    });
+    
+    // Add image reveal animation
+    if (!document.getElementById('image-reveal-styles')) {
+        const style = document.createElement('style');
+        style.id = 'image-reveal-styles';
+        style.textContent = `
+            @keyframes imageReveal {
+                from { 
+                    opacity: 0; 
+                    transform: scale(0.8) rotate(-2deg); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: scale(1) rotate(0deg); 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // Keyboard navigation improvements
@@ -583,6 +851,12 @@ document.addEventListener('keydown', function(e) {
         if (nav && nav.classList.contains('active')) {
             nav.classList.remove('active');
             navToggle.classList.remove('active');
+            
+            // Reset hamburger animation
+            const spans = navToggle.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
         }
         
         // Close notifications
@@ -622,10 +896,20 @@ window.addEventListener('resize', function() {
                 element.style.transform = '';
             }
         });
+        
+        // Reinitialize parallax on resize
+        if (window.innerWidth <= 768) {
+            const parallaxElements = document.querySelectorAll(
+                '.hero__background, .services__background, .stats__background'
+            );
+            parallaxElements.forEach(element => {
+                element.style.transform = 'none';
+            });
+        }
     }, 250);
 });
 
-// Touch/swipe support for mobile FAQ
+// Touch/swipe support for mobile enhancements
 let touchStartY = 0;
 let touchEndY = 0;
 
@@ -645,6 +929,10 @@ function handleVerticalSwipe() {
     // Add subtle scroll-based interactions for mobile
     if (Math.abs(swipeDistance) > threshold) {
         // Could add mobile-specific scroll interactions here
+        document.body.style.transform = 'scale(0.995)';
+        setTimeout(() => {
+            document.body.style.transform = 'scale(1)';
+        }, 100);
     }
 }
 
@@ -694,4 +982,34 @@ window.addEventListener('scroll', function() {
     }
 });
 
-console.log('🚀 Parquet Cycling website loaded successfully!');
+// Add loading animation for the entire page
+window.addEventListener('load', function() {
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease-in';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+    
+    console.log('🚀 ТОП Паркет Варна website loaded successfully!');
+});
+
+// Initialize page transitions
+function initPageTransitions() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            // Add subtle page transition effect
+            document.body.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                document.body.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+}
+
+// Call on load
+document.addEventListener('DOMContentLoaded', function() {
+    initPageTransitions();
+});
