@@ -15,7 +15,130 @@ document.addEventListener('DOMContentLoaded', function() {
     initParallaxEffects();
     initFloatingAnimations();
     initImageRevealAnimations();
+    initBackgroundVisibility();
+    
+    // Start background monitoring to prevent overrides
+    startBackgroundMonitoring();
 });
+
+// Monitor and fix background continuously
+function startBackgroundMonitoring() {
+    // Set backgrounds for all sections
+    setAllSectionBackgrounds();
+    
+    setInterval(() => {
+        const heroBackground = document.querySelector('.hero__background');
+        const heroSection = document.querySelector('.hero');
+        
+        if (heroBackground && heroSection) {
+            const computed = getComputedStyle(heroBackground);
+            
+            // Check if background was overridden
+            if (computed.background.includes('gradient') && !computed.background.includes('#2c5530')) {
+                heroBackground.style.setProperty('background', '#2c5530', 'important');
+                heroBackground.style.setProperty('background-color', '#2c5530', 'important');
+                heroSection.style.setProperty('background', '#2c5530', 'important');
+                heroSection.style.setProperty('background-color', '#2c5530', 'important');
+            }
+        }
+    }, 100); // Check every 100ms
+}
+
+// Set beautiful backgrounds for all sections
+function setAllSectionBackgrounds() {
+    
+    // Hero section - keep the green we already have
+    const heroSection = document.querySelector('.hero');
+    if (heroSection) {
+        heroSection.style.setProperty('background', '#2c5530', 'important');
+        heroSection.style.setProperty('background-color', '#2c5530', 'important');
+    }
+    
+    // Why Choose section - light wood texture
+    const whyChooseSection = document.querySelector('.why-choose');
+    if (whyChooseSection) {
+        whyChooseSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(241, 243, 244, 0.95), rgba(232, 234, 237, 0.95)),
+            url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        whyChooseSection.style.setProperty('background-size', 'cover', 'important');
+        whyChooseSection.style.setProperty('background-position', 'center', 'important');
+        whyChooseSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // Services section - parquet pattern
+    const servicesSection = document.querySelector('.services');
+    if (servicesSection) {
+        servicesSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(250, 251, 252, 0.9), rgba(241, 243, 244, 0.9)),
+            url('https://images.unsplash.com/photo-1558618666-fbd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        servicesSection.style.setProperty('background-size', 'cover', 'important');
+        servicesSection.style.setProperty('background-position', 'center', 'important');
+        servicesSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // Pricing section - dark wood
+    const pricingSection = document.querySelector('.pricing');
+    if (pricingSection) {
+        pricingSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
+            url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        pricingSection.style.setProperty('background-size', 'cover', 'important');
+        pricingSection.style.setProperty('background-position', 'center', 'important');
+        pricingSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // Process section - light parquet
+    const processSection = document.querySelector('.process');
+    if (processSection) {
+        processSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
+            url('https://images.unsplash.com/photo-1615971677499-5467cbab2e57?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        processSection.style.setProperty('background-size', 'cover', 'important');
+        processSection.style.setProperty('background-position', 'center', 'important');
+        processSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // Stats section - dark wood
+    const statsSection = document.querySelector('.stats');
+    if (statsSection) {
+        statsSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
+            url('https://images.unsplash.com/photo-1581578731548-c6a0c3f2fcc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        statsSection.style.setProperty('background-size', 'cover', 'important');
+        statsSection.style.setProperty('background-position', 'center', 'important');
+        statsSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // FAQ section - light wood
+    const faqSection = document.querySelector('.faq');
+    if (faqSection) {
+        faqSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)),
+            url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        faqSection.style.setProperty('background-size', 'cover', 'important');
+        faqSection.style.setProperty('background-position', 'center', 'important');
+        faqSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+    // Contact section - parquet floor
+    const contactSection = document.querySelector('.contact');
+    if (contactSection) {
+        contactSection.style.setProperty('background', `
+            linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
+            url('https://images.unsplash.com/photo-1558618666-fbd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+        `, 'important');
+        contactSection.style.setProperty('background-size', 'cover', 'important');
+        contactSection.style.setProperty('background-position', 'center', 'important');
+        contactSection.style.setProperty('background-attachment', 'fixed', 'important');
+    }
+    
+}
 
 // Mobile Navigation
 function initMobileNavigation() {
@@ -438,12 +561,20 @@ function initSmoothScrolling() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
+                // Check backgrounds before scrolling
+                initBackgroundVisibility();
+                
                 const header = document.querySelector('.header');
                 const headerHeight = header ? header.offsetHeight : 70;
                 const targetPosition = targetElement.offsetTop - headerHeight - 20;
                 
                 // Add smooth scroll with easing
                 smoothScrollTo(Math.max(0, targetPosition), 800);
+                
+                // Check backgrounds again after scroll starts
+                setTimeout(() => {
+                    initBackgroundVisibility();
+                }, 100);
             }
         });
     });
@@ -739,35 +870,67 @@ function initStaggeredAnimations() {
     });
 }
 
-// Parallax effects for background images
+// Parallax effects for background images - DISABLED to fix background visibility
 function initParallaxEffects() {
-    const parallaxElements = document.querySelectorAll(
-        '.hero__background, .services__background, .stats__background'
+    // Disabled parallax effects to ensure backgrounds are always visible
+    // The backgrounds now use CSS gradients which work better without transforms
+    return;
+}
+
+// Ensure backgrounds are always visible
+function initBackgroundVisibility() {
+    const backgroundElements = document.querySelectorAll(
+        '.hero__background, .why-choose__background, .services__background, .pricing__background, .process__background, .stats__background, .faq__background, .contact__background'
     );
     
-    let ticking = false;
+    // Special check for hero background
+    const heroBackground = document.querySelector('.hero__background');
+    const heroSection = document.querySelector('.hero');
     
-    function updateParallax() {
-        const scrollTop = window.pageYOffset;
-        
-        parallaxElements.forEach(element => {
-            const rate = scrollTop * -0.5;
-            element.style.transform = `translate3d(0, ${rate}px, 0)`;
-        });
-        
-        ticking = false;
+    if (heroBackground) {
+        const computed = getComputedStyle(heroBackground);
+        const heroComputed = getComputedStyle(heroSection);
     }
     
-    function requestParallaxTick() {
-        if (!ticking && window.innerWidth > 768) {
-            requestAnimationFrame(updateParallax);
-            ticking = true;
+    backgroundElements.forEach((element, index) => {
+        const computed = getComputedStyle(element);
+        
+        // Reset any transforms that might hide the background
+        element.style.transform = 'none';
+        element.style.display = 'block';
+        element.style.visibility = 'visible';
+        element.style.opacity = '1';
+        
+        // Force background for hero element
+        if (element.classList.contains('hero__background')) {
+            // Set background with !important to override any CSS
+            element.setAttribute('style', `
+                transform: none !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                background: #2c5530 !important;
+                background-color: #2c5530 !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                z-index: -2 !important;
+            `);
+            
+            // Also set background on the hero section itself
+            const heroSection = element.parentElement;
+            if (heroSection && heroSection.classList.contains('hero')) {
+                heroSection.style.setProperty('background', '#2c5530', 'important');
+                heroSection.style.setProperty('background-color', '#2c5530', 'important');
+            }
         }
-    }
+    });
     
-    // Only enable parallax on larger screens
-    if (window.innerWidth > 768) {
-        window.addEventListener('scroll', requestParallaxTick);
+    // Final check after applying fixes
+    if (heroBackground) {
+        const computed = getComputedStyle(heroBackground);
     }
 }
 
@@ -892,20 +1055,23 @@ window.addEventListener('resize', function() {
         // Reset any transforms that might be broken on resize
         const animatedElements = document.querySelectorAll('[style*="transform"]');
         animatedElements.forEach(element => {
-            if (!element.closest('.stat') && !element.closest('.service-card')) {
+            // Don't reset transforms on background elements or important animated elements
+            if (!element.closest('.stat') && 
+                !element.closest('.service-card') && 
+                !element.classList.contains('hero__background') &&
+                !element.classList.contains('services__background') &&
+                !element.classList.contains('stats__background') &&
+                !element.classList.contains('why-choose__background') &&
+                !element.classList.contains('pricing__background') &&
+                !element.classList.contains('process__background') &&
+                !element.classList.contains('faq__background') &&
+                !element.classList.contains('contact__background')) {
                 element.style.transform = '';
             }
         });
         
-        // Reinitialize parallax on resize
-        if (window.innerWidth <= 768) {
-            const parallaxElements = document.querySelectorAll(
-                '.hero__background, .services__background, .stats__background'
-            );
-            parallaxElements.forEach(element => {
-                element.style.transform = 'none';
-            });
-        }
+        // Ensure backgrounds stay visible on resize
+        initBackgroundVisibility();
     }, 250);
 });
 
@@ -984,14 +1150,15 @@ window.addEventListener('scroll', function() {
 
 // Add loading animation for the entire page
 window.addEventListener('load', function() {
+    // Check backgrounds again after everything is loaded
+    initBackgroundVisibility();
+    
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease-in';
     
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
-    
-    console.log('🚀 ТОП Паркет Варна website loaded successfully!');
 });
 
 // Initialize page transitions
