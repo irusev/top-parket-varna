@@ -55,84 +55,84 @@ function setAllSectionBackgrounds() {
         heroSection.style.setProperty('background-color', '#2c5530', 'important');
     }
     
-    // Why Choose section - light wood texture
+    // Why Choose section - parquet work
     const whyChooseSection = document.querySelector('.why-choose');
     if (whyChooseSection) {
         whyChooseSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(241, 243, 244, 0.95), rgba(232, 234, 237, 0.95)),
-            url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_0.jpg')
         `, 'important');
         whyChooseSection.style.setProperty('background-size', 'cover', 'important');
         whyChooseSection.style.setProperty('background-position', 'center', 'important');
         whyChooseSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // Services section - parquet pattern
+    // Services section - parquet work
     const servicesSection = document.querySelector('.services');
     if (servicesSection) {
         servicesSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(250, 251, 252, 0.9), rgba(241, 243, 244, 0.9)),
-            url('https://images.unsplash.com/photo-1558618666-fbd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_1.jpg')
         `, 'important');
         servicesSection.style.setProperty('background-size', 'cover', 'important');
         servicesSection.style.setProperty('background-position', 'center', 'important');
         servicesSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // Pricing section - dark wood
+    // Pricing section - parquet work
     const pricingSection = document.querySelector('.pricing');
     if (pricingSection) {
         pricingSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
-            url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_2.jpg')
         `, 'important');
         pricingSection.style.setProperty('background-size', 'cover', 'important');
         pricingSection.style.setProperty('background-position', 'center', 'important');
         pricingSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // Process section - light parquet
+    // Process section - parquet work
     const processSection = document.querySelector('.process');
     if (processSection) {
         processSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
-            url('https://images.unsplash.com/photo-1615971677499-5467cbab2e57?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_3.jpg')
         `, 'important');
         processSection.style.setProperty('background-size', 'cover', 'important');
         processSection.style.setProperty('background-position', 'center', 'important');
         processSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // Stats section - dark wood
+    // Stats section - parquet work
     const statsSection = document.querySelector('.stats');
     if (statsSection) {
         statsSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
-            url('https://images.unsplash.com/photo-1581578731548-c6a0c3f2fcc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_24.jpg')
         `, 'important');
         statsSection.style.setProperty('background-size', 'cover', 'important');
         statsSection.style.setProperty('background-position', 'center', 'important');
         statsSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // FAQ section - light wood
+    // FAQ section - parquet work
     const faqSection = document.querySelector('.faq');
     if (faqSection) {
         faqSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)),
-            url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_25.jpg')
         `, 'important');
         faqSection.style.setProperty('background-size', 'cover', 'important');
         faqSection.style.setProperty('background-position', 'center', 'important');
         faqSection.style.setProperty('background-attachment', 'fixed', 'important');
     }
     
-    // Contact section - parquet floor
+    // Contact section - parquet work
     const contactSection = document.querySelector('.contact');
     if (contactSection) {
         contactSection.style.setProperty('background', `
             linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
-            url('https://images.unsplash.com/photo-1558618666-fbd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')
+            url('downloaded_images/image_26.jpg')
         `, 'important');
         contactSection.style.setProperty('background-size', 'cover', 'important');
         contactSection.style.setProperty('background-position', 'center', 'important');
@@ -1430,8 +1430,55 @@ function closeBlogModal() {
     document.body.style.overflow = 'auto';
 }
 
+// Sticky Contact Button functionality
+function initStickyContact() {
+    const stickyContact = document.getElementById('stickyContact');
+    const heroSection = document.querySelector('.hero');
+    
+    if (!stickyContact) {
+        console.log('Sticky contact element not found');
+        return;
+    }
+    
+    if (!heroSection) {
+        console.log('Hero section not found');
+        return;
+    }
+    
+    // Show sticky contact after scrolling past hero
+    function handleScroll() {
+        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > heroBottom - 100) {
+            stickyContact.classList.add('visible');
+        } else {
+            stickyContact.classList.remove('visible');
+        }
+    }
+    
+    // Throttle scroll events for better performance
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(handleScroll, 10);
+    });
+    
+    // Initial check
+    handleScroll();
+    
+    // For testing - show immediately after 2 seconds
+    setTimeout(() => {
+        stickyContact.classList.add('visible');
+        console.log('Sticky contact button should now be visible');
+    }, 2000);
+}
+
 // Call on load
 document.addEventListener('DOMContentLoaded', function() {
     initPageTransitions();
     initBlogModal(); // Initialize blog modal functionality
+    initStickyContact(); // Initialize sticky contact button
 });
