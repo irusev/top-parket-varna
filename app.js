@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initFloatingAnimations();
     initImageRevealAnimations();
     initBackgroundVisibility();
-    //initGallery();
+    initGallery();
     
     // Start background monitoring to prevent overrides
     startBackgroundMonitoring();
@@ -479,6 +479,13 @@ function initStatsCounter() {
     const statContainers = document.querySelectorAll('.stat');
     
     if (!statsSection || stats.length === 0) return;
+    
+    // Set dynamic value for renovated floors counter
+    const renovatedFloorsStat = document.querySelector('.stat__number[data-count="dynamic"]');
+    if (renovatedFloorsStat) {
+        const dynamicValue = calculateRenovatedFloors();
+        renovatedFloorsStat.setAttribute('data-count', dynamicValue);
+    }
     
     let hasAnimated = false; // Prevent multiple animations
     
@@ -1161,6 +1168,56 @@ window.addEventListener('load', function() {
         document.body.style.opacity = '1';
     }, 100);
 });
+
+// Gallery functionality
+function initGallery() {
+    const galleryTabs = document.querySelectorAll('.gallery-tab');
+    const galleryContents = document.querySelectorAll('.gallery-tab-content');
+    
+    galleryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            galleryTabs.forEach(t => t.classList.remove('active'));
+            galleryContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+    
+    // Shuffle gallery images for better visual appeal
+    shuffleGalleryImages();
+}
+
+// Shuffle gallery images for random display
+function shuffleGalleryImages() {
+    const galleryGrids = document.querySelectorAll('.gallery-grid');
+    
+    galleryGrids.forEach(grid => {
+        const items = Array.from(grid.children);
+        
+        // Fisher-Yates shuffle algorithm
+        for (let i = items.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            grid.appendChild(items[j]);
+        }
+    });
+}
+
+// Calculate days since 2010 and divide by 10 for dynamic counter
+function calculateRenovatedFloors() {
+    const startDate = new Date('2010-01-01');
+    const currentDate = new Date();
+    const timeDifference = currentDate - startDate;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    return Math.floor(daysDifference / 10);
+}
 
 // Initialize page transitions
 function initPageTransitions() {
