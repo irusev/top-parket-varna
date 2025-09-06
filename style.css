@@ -2423,6 +2423,32 @@ textarea.form-control {
   to { transform: rotate(360deg); }
 }
 
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+.social-link {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-link:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.social-link img {
+    border-radius: 50%;
+    transition: box-shadow 0.3s ease;
+}
+
+.social-link:hover img {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 /* Smooth transitions for all interactive elements */
 * {
   transition: border-color var(--transition-fast);
