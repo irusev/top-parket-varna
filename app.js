@@ -55,89 +55,8 @@ function setAllSectionBackgrounds() {
         heroSection.style.setProperty('background-color', '#2c5530', 'important');
     }
     
-    // Why Choose section - parquet work
-    const whyChooseSection = document.querySelector('.why-choose');
-    if (whyChooseSection) {
-        whyChooseSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(241, 243, 244, 0.95), rgba(232, 234, 237, 0.95)),
-            url('downloaded_images/image_0.jpg')
-        `, 'important');
-        whyChooseSection.style.setProperty('background-size', 'cover', 'important');
-        whyChooseSection.style.setProperty('background-position', 'center', 'important');
-        whyChooseSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // Services section - parquet work
-    const servicesSection = document.querySelector('.services');
-    if (servicesSection) {
-        servicesSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(250, 251, 252, 0.9), rgba(241, 243, 244, 0.9)),
-            url('downloaded_images/image_1.jpg')
-        `, 'important');
-        servicesSection.style.setProperty('background-size', 'cover', 'important');
-        servicesSection.style.setProperty('background-position', 'center', 'important');
-        servicesSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // Pricing section - parquet work
-    const pricingSection = document.querySelector('.pricing');
-    if (pricingSection) {
-        pricingSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
-            url('downloaded_images/image_2.jpg')
-        `, 'important');
-        pricingSection.style.setProperty('background-size', 'cover', 'important');
-        pricingSection.style.setProperty('background-position', 'center', 'important');
-        pricingSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // Process section - parquet work
-    const processSection = document.querySelector('.process');
-    if (processSection) {
-        processSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
-            url('downloaded_images/image_3.jpg')
-        `, 'important');
-        processSection.style.setProperty('background-size', 'cover', 'important');
-        processSection.style.setProperty('background-position', 'center', 'important');
-        processSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // Stats section - parquet work
-    const statsSection = document.querySelector('.stats');
-    if (statsSection) {
-        statsSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(52, 73, 94, 0.9)),
-            url('downloaded_images/image_24.jpg')
-        `, 'important');
-        statsSection.style.setProperty('background-size', 'cover', 'important');
-        statsSection.style.setProperty('background-position', 'center', 'important');
-        statsSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // FAQ section - parquet work
-    const faqSection = document.querySelector('.faq');
-    if (faqSection) {
-        faqSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)),
-            url('downloaded_images/image_25.jpg')
-        `, 'important');
-        faqSection.style.setProperty('background-size', 'cover', 'important');
-        faqSection.style.setProperty('background-position', 'center', 'important');
-        faqSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
-    
-    // Contact section - parquet work
-    const contactSection = document.querySelector('.contact');
-    if (contactSection) {
-        contactSection.style.setProperty('background', `
-            linear-gradient(135deg, rgba(248, 249, 250, 0.9), rgba(233, 236, 239, 0.9)),
-            url('downloaded_images/image_26.jpg')
-        `, 'important');
-        contactSection.style.setProperty('background-size', 'cover', 'important');
-        contactSection.style.setProperty('background-position', 'center', 'important');
-        contactSection.style.setProperty('background-attachment', 'fixed', 'important');
-    }
+    // Remove all background images - use clean CSS gradients only
+    // Background images removed for cleaner, faster loading design
     
 }
 
@@ -594,10 +513,28 @@ function smoothScrollTo(target, duration) {
     let currentTime = 0;
     const increment = 20;
     
+    const stickyContact = document.getElementById('stickyContact');
+    
     function animateScroll() {
         currentTime += increment;
         const val = easeInOutQuad(currentTime, start, distance, duration);
         window.scrollTo(0, val);
+        
+        // Force sticky button visibility during scroll
+        if (stickyContact) {
+            stickyContact.style.cssText = `
+                position: fixed !important;
+                bottom: 20px !important;
+                right: 20px !important;
+                z-index: 1000 !important;
+                opacity: 1 !important;
+                display: block !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: translateY(0) !important;
+            `;
+        }
+        
         if (currentTime < duration) {
             requestAnimationFrame(animateScroll);
         }
@@ -940,6 +877,7 @@ function initBackgroundVisibility() {
     if (heroBackground) {
         const computed = getComputedStyle(heroBackground);
     }
+    
 }
 
 // Floating animations for icons and illustrations
@@ -1169,46 +1107,159 @@ window.addEventListener('load', function() {
     }, 100);
 });
 
-// Gallery functionality
+// Gallery functionality - simplified for before/after only
 function initGallery() {
-    const galleryTabs = document.querySelectorAll('.gallery-tab');
-    const galleryContents = document.querySelectorAll('.gallery-tab-content');
-    
-    galleryTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const targetTab = this.getAttribute('data-tab');
-            
-            // Remove active class from all tabs and contents
-            galleryTabs.forEach(t => t.classList.remove('active'));
-            galleryContents.forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked tab and corresponding content
-            this.classList.add('active');
-            const targetContent = document.getElementById(targetTab);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
-        });
-    });
-    
     // Shuffle gallery images for better visual appeal
     shuffleGalleryImages();
+    
+    // Initialize carousel for mobile
+    initGalleryCarousel();
 }
 
 // Shuffle gallery images for random display
 function shuffleGalleryImages() {
-    const galleryGrids = document.querySelectorAll('.gallery-grid');
+    const galleryGrid = document.querySelector('.gallery-grid');
     
-    galleryGrids.forEach(grid => {
-        const items = Array.from(grid.children);
+    if (galleryGrid) {
+        const items = Array.from(galleryGrid.children);
         
         // Fisher-Yates shuffle algorithm
         for (let i = items.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            grid.appendChild(items[j]);
+            galleryGrid.appendChild(items[j]);
         }
-    });
+    }
 }
+
+// Gallery Carousel functionality
+function initGalleryCarousel() {
+    const carouselTrack = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    if (!carouselTrack || !prevBtn || !nextBtn) return;
+    
+    let currentSlide = 0;
+    const totalSlides = carouselTrack.children.length;
+    
+    // Update carousel position
+    function updateCarousel() {
+        const translateX = -currentSlide * 100;
+        carouselTrack.style.transform = `translateX(${translateX}%)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentSlide);
+        });
+    }
+    
+    // Next slide
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Previous slide
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Go to specific slide
+    function goToSlide(slideIndex) {
+        currentSlide = slideIndex;
+        updateCarousel();
+    }
+    
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Indicator clicks
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => goToSlide(index));
+    });
+    
+    // Touch/swipe support
+    let startX = 0;
+    let endX = 0;
+    
+    carouselTrack.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    carouselTrack.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                nextSlide(); // Swipe left - next slide
+            } else {
+                prevSlide(); // Swipe right - previous slide
+            }
+        }
+    }
+    
+    // Auto-play (optional)
+    setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    
+    // Initialize
+    updateCarousel();
+}
+
+// Gallery Modal functionality
+function openGalleryModal(imgElement) {
+    console.log('openGalleryModal called with:', imgElement);
+    
+    const modal = document.getElementById('galleryModal');
+    const modalImage = document.getElementById('galleryModalImage');
+    const modalCaption = document.getElementById('galleryModalCaption');
+    
+    console.log('Modal elements found:', { modal, modalImage, modalCaption });
+    
+    if (!modal || !modalImage || !modalCaption) {
+        console.error('Gallery modal elements not found!');
+        return;
+    }
+    
+    // Set image source and alt text
+    modalImage.src = imgElement.src;
+    modalImage.alt = imgElement.alt;
+    
+    // Set caption based on alt text
+    modalCaption.textContent = imgElement.alt;
+    
+    console.log('Setting modal image src:', imgElement.src);
+    console.log('Setting modal caption:', imgElement.alt);
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    console.log('Modal should now be visible');
+}
+
+function closeGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeGalleryModal();
+    }
+});
 
 // Calculate days since 2010 and divide by 10 for dynamic counter
 function calculateRenovatedFloors() {
@@ -1430,50 +1481,62 @@ function closeBlogModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Sticky Contact Button functionality
+// Sticky Contact Button functionality - ALWAYS VISIBLE
 function initStickyContact() {
     const stickyContact = document.getElementById('stickyContact');
-    const heroSection = document.querySelector('.hero');
     
     if (!stickyContact) {
-        console.log('Sticky contact element not found');
+        console.error('Sticky contact element not found!');
         return;
     }
     
-    if (!heroSection) {
-        console.log('Hero section not found');
-        return;
-    }
+    // Force visibility with proper positioning
+    stickyContact.style.cssText = `
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 1000 !important;
+        opacity: 1 !important;
+        display: block !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+    `;
     
-    // Show sticky contact after scrolling past hero
-    function handleScroll() {
-        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > heroBottom - 100) {
+    stickyContact.classList.add('visible');
+    
+    // Continuous monitoring to ensure it never disappears
+    let monitoringCount = 0;
+    setInterval(() => {
+        monitoringCount++;
+        if (stickyContact) {
+            const currentStyles = window.getComputedStyle(stickyContact);
+            const rect = stickyContact.getBoundingClientRect();
+            const isVisible = currentStyles.display !== 'none' && 
+                             currentStyles.visibility !== 'hidden' && 
+                             parseFloat(currentStyles.opacity) > 0 &&
+                             rect.width > 0 && rect.height > 0;
+            
+            if (!isVisible) {
+                console.warn(`Sticky button disappeared! Re-applying styles...`);
+            }
+            
+            // Force visibility again
+            stickyContact.style.cssText = `
+                position: fixed !important;
+                bottom: 20px !important;
+                right: 20px !important;
+                z-index: 1000 !important;
+                opacity: 1 !important;
+                display: block !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: translateY(0) !important;
+            `;
             stickyContact.classList.add('visible');
-        } else {
-            stickyContact.classList.remove('visible');
         }
-    }
+    }, 500);
     
-    // Throttle scroll events for better performance
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-        if (scrollTimeout) {
-            clearTimeout(scrollTimeout);
-        }
-        scrollTimeout = setTimeout(handleScroll, 10);
-    });
-    
-    // Initial check
-    handleScroll();
-    
-    // For testing - show immediately after 2 seconds
-    setTimeout(() => {
-        stickyContact.classList.add('visible');
-        console.log('Sticky contact button should now be visible');
-    }, 2000);
 }
 
 // Call on load
@@ -1481,4 +1544,27 @@ document.addEventListener('DOMContentLoaded', function() {
     initPageTransitions();
     initBlogModal(); // Initialize blog modal functionality
     initStickyContact(); // Initialize sticky contact button
+    
+    // Ensure sticky button stays visible after navigation clicks
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('a[href^="#"]')) {
+            const stickyContact = document.getElementById('stickyContact');
+            if (stickyContact) {
+                // Force visibility immediately after click
+                setTimeout(() => {
+                    stickyContact.style.cssText = `
+                        position: fixed !important;
+                        bottom: 20px !important;
+                        right: 20px !important;
+                        z-index: 1000 !important;
+                        opacity: 1 !important;
+                        display: block !important;
+                        visibility: visible !important;
+                        pointer-events: auto !important;
+                        transform: translateY(0) !important;
+                    `;
+                }, 10);
+            }
+        }
+    });
 });

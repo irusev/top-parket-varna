@@ -94,6 +94,8 @@
                     <li><a href="#services">Услуги</a></li>
                     <li><a href="#gallery">Галерия</a></li>
                     <li><a href="#pricing">Цени</a></li>
+                    <li><a href="#testimonials">За нас</a></li>
+                    <li><a href="#faq">Въпроси</a></li>
                     <li><a href="#contact">Контакти</a></li>
                 </ul>
                 </nav>
@@ -279,61 +281,6 @@
             </div>
         </section>
 
-        <!-- Pricing Section -->
-        <section class="pricing">
-            <div class="pricing__background"></div>
-            <div class="pricing__overlay"></div>
-            <div class="container">
-                <div class="section-header">
-                    <h2>Промо пакети</h2>
-                    <p>Специални оферти за циклене на паркет във Варна</p>
-                </div>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <div class="pricing-card__illustration">⭐</div>
-                        <h3>Премиум</h3>
-                        <div class="pricing-card__price">18 лв./м²</div>
-                        <p>Безпрахово циклене с качествени материали</p>
-                        <ul>
-                            <li>Безпрахово Циклене</li>
-                            <li>(циклене с 3 различни по едрина шкурки, финно шлайфане м/у ръцете лак)</li>
-                            <li>Лакиране: 2 ръце лак</li>
-                            <li>(DYO полиуретанов гланцов лак, бавно съхнещ, износоустойчив)</li>
-                        </ul>
-                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
-                    </div>
-                    
-                    <div class="pricing-card featured">
-                        <div class="pricing-card__illustration">⭐⭐</div>
-                        <h3>Премиум +</h3>
-                        <div class="pricing-card__price">24 лв./м²</div>
-                        <p>Най-добрият пакет с италиански лакове</p>
-                        <ul>
-                            <li>Безпрахово Циклене</li>
-                            <li>(циклене с 3 различни по едрина шкурки, финно шлайфане м/у ръцете лак)</li>
-                            <li>Лакиране: 3 ръце лак</li>
-                            <li>(Chemiver - италиански матов лак на водна основа, бързо съхнещ, без мирис, износоустойчив финиш)</li>
-                        </ul>
-                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
-                    </div>
-                    
-                    <div class="pricing-card">
-                        <div class="pricing-card__illustration">🔧</div>
-                        <h3>Допълнителни услуги</h3>
-                        <div class="pricing-card__price">от 10 лв./м²</div>
-                        <p>Специализирани услуги за вашия паркет</p>
-                        <ul>
-                            <li>Циклене нов паркет и дюшеме - 10 лв./кв.м</li>
-                            <li>Циклене стар паркет и дюшеме (лак) - 10 лв./кв.м</li>
-                            <li>Циклене стар паркет и дюшеме (боя или безир) - 10 лв./кв.м</li>
-                            <li>Фугиране на паркет и дюшеме - 2 лв./кв.м + смола</li>
-                        </ul>
-                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Process Section -->
         <section class="process">
@@ -672,174 +619,246 @@
                     <h2>Галерия</h2>
                     <p>Нашите работи и професионално оборудване</p>
                 </div>
-                <div class="gallery-tabs">
-                    <button class="gallery-tab active" data-tab="before-after">Преди/След</button>
-                    <button class="gallery-tab" data-tab="projects">Реализирани проекти</button>
-                    <button class="gallery-tab" data-tab="equipment">Оборудване</button>
-                </div>
                 <div class="gallery-content">
-                    <!-- Before/After Tab -->
-                    <div class="gallery-tab-content active" id="before-after">
-                        <div class="gallery-grid">
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_0.jpg" alt="Циклене Паркет Варна - Преди" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>Преди циклене</p>
-                                    </div>
+                    <!-- Desktop Grid View -->
+                    <div class="gallery-grid desktop-only">
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="gallery_images/1/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="gallery_images/1/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_1.jpg" alt="Циклене Паркет Варна - След" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>След циклене</p>
-                                    </div>
+                        </div>
+                        
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="gallery_images/2/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="gallery_images/2/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_2.jpg" alt="Паркет Варна циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>Професионално циклене</p>
-                                    </div>
+                        </div>
+                        
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="gallery_images/3/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="gallery_images/3/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_3.jpg" alt="Хубаво циклене варна" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>Качествено циклене</p>
-                                    </div>
+                        </div>
+                        
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_4.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_5.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_24.jpg" alt="Преди и след циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>Преди и след</p>
-                                    </div>
+                        </div>
+                        
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_6.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_7.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_25.jpg" alt="Резултат от циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">📸</span>
-                                        <p>Отличен резултат</p>
-                                    </div>
+                        </div>
+                        
+                        <div class="gallery-item">
+                            <div class="before-after-container">
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_8.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">Преди</div>
+                                </div>
+                                <div class="before-after-image">
+                                    <img src="downloaded_images/image_9.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                    <div class="before-after-label">След</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Projects Tab -->
-                    <div class="gallery-tab-content" id="projects">
-                        <div class="gallery-grid">
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_26.jpg" alt="Завършен проект - Циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Завършен проект</p>
+                    
+                    <!-- Mobile Carousel View -->
+                    <div class="gallery-carousel mobile-only">
+                        <div class="carousel-container">
+                            <div class="carousel-track" id="carouselTrack">
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/1/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/1/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/2/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/2/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/3/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="gallery_images/3/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_4.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_5.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_6.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_7.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="carousel-slide">
+                                    <div class="before-after-container">
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_8.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">Преди</div>
+                                        </div>
+                                        <div class="before-after-image">
+                                            <img src="downloaded_images/image_9.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
+                                            <div class="before-after-label">След</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_27.jpg" alt="Реализиран проект Варна" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Реализиран проект</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_28.jpg" alt="Качествено циклене Варна" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Качествено циклене</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_29.jpg" alt="Професионално циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Професионално циклене</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_30.jpg" alt="Готов проект паркет" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Готов проект</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/image_31.jpg" alt="Най-добро циклене Варна" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏠</span>
-                                        <p>Най-добро циклене</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Equipment Tab -->
-                    <div class="gallery-tab-content" id="equipment">
-                        <div class="gallery-grid">
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/price-image.jpg" alt="Професионално оборудване за циклене" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🔧</span>
-                                        <p>Професионално оборудване</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/family.png" alt="Семейна работа и опит" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">👨‍👩‍👧‍👦</span>
-                                        <p>Семейна работа</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/logo.jpg" alt="Топ Паркет Варна - Лого" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🏆</span>
-                                        <p>Топ Паркет Варна</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="gallery-image">
-                                    <img src="downloaded_images/leaf1.png" alt="Екологични материали" />
-                                    <div class="gallery-overlay">
-                                        <span class="gallery-icon">🌿</span>
-                                        <p>Екологични материали</p>
-                                    </div>
-                                </div>
+                            
+                            <!-- Carousel Controls -->
+                            <button class="carousel-btn carousel-btn--prev" id="prevBtn">‹</button>
+                            <button class="carousel-btn carousel-btn--next" id="nextBtn">›</button>
+                            
+                            <!-- Carousel Indicators -->
+                            <div class="carousel-indicators">
+                                <span class="indicator active" data-slide="0"></span>
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing" id="pricing">
+            <div class="pricing__background"></div>
+            <div class="pricing__overlay"></div>
+            <div class="container">
+                <div class="section-header">
+                    <h2>Промо пакети</h2>
+                    <p>Специални оферти за професионално циклене на паркет</p>
+                </div>
+                
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-card__illustration">⭐</div>
+                        <h3>Премиум</h3>
+                        <div class="pricing-card__price">18 лв./м²</div>
+                        <p>Безпрахово циклене с качествени материали</p>
+                        <ul>
+                            <li>Безпрахово Циклене</li>
+                            <li>(циклене с 3 различни по едрина шкурки, финно шлайфане м/у ръцете лак)</li>
+                            <li>Лакиране: 2 ръце лак</li>
+                            <li>(DYO полиуретанов гланцов лак, бавно съхнещ, износоустойчив)</li>
+                        </ul>
+                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="pricing-card__illustration">⭐⭐</div>
+                        <h3>Премиум +</h3>
+                        <div class="pricing-card__price">24 лв./м²</div>
+                        <p>Най-добрият пакет с италиански лакове</p>
+                        <ul>
+                            <li>Безпрахово Циклене</li>
+                            <li>(циклене с 3 различни по едрина шкурки, финно шлайфане м/у ръцете лак)</li>
+                            <li>Лакиране: 3 ръце лак</li>
+                            <li>(Chemiver - италиански матов лак на водна основа, бързо съхнещ, без мирис, износоустойчив финиш)</li>
+                        </ul>
+                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-card__illustration">🔧</div>
+                        <h3>Допълнителни услуги</h3>
+                        <div class="pricing-card__price">от 10 лв./м²</div>
+                        <p>Специализирани услуги за вашия паркет</p>
+                        <ul>
+                            <li>Циклене нов паркет и дюшеме - 10 лв./кв.м</li>
+                            <li>Циклене стар паркет и дюшеме (лак) - 10 лв./кв.м</li>
+                            <li>Циклене стар паркет и дюшеме (боя или безир) - 10 лв./кв.м</li>
+                            <li>Фугиране на паркет и дюшеме - 2 лв./кв.м + смола</li>
+                        </ul>
+                        <button class="btn btn--orange" onclick="scrollToSection('contact')">Поръчай сега</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Blog/News Section -->
         <section class="blog" id="blog">
@@ -909,10 +928,6 @@
                         </div>
                     </article>
                 </div>
-                <div class="blog__cta">
-                    <p>Искате да научите повече? Следвайте нашите съвети и поддържайте паркета в отлично състояние!</p>
-                    <button class="btn btn--orange" onclick="scrollToSection('contact')">Свържете се с нас</button>
-                </div>
             </div>
         </section>
         
@@ -922,12 +937,7 @@
     <div class="sticky-contact" id="stickyContact">
         <a href="tel:0887726236" class="sticky-phone">
             <span class="sticky-phone__icon">📞</span>
-            <span class="sticky-phone__number">0887726236</span>
         </a>
-        <button class="sticky-cta" onclick="scrollToSection('contact')">
-            <span class="sticky-cta__icon">💬</span>
-            <span class="sticky-cta__text">Заявка</span>
-        </button>
     </div>
 
     <!-- Blog Article Modal -->
@@ -945,6 +955,18 @@
             </div>
             <div class="blog-modal__body" id="modalBody">
                 <!-- Article content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Image Modal -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-modal__overlay" onclick="closeGalleryModal()"></div>
+        <div class="gallery-modal__content">
+            <button class="gallery-modal__close" onclick="closeGalleryModal()">&times;</button>
+            <div class="gallery-modal__image-container">
+                <img class="gallery-modal__image" id="galleryModalImage" src="" alt="" />
+                <div class="gallery-modal__caption" id="galleryModalCaption"></div>
             </div>
         </div>
     </div>
