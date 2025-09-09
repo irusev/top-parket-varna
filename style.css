@@ -817,7 +817,7 @@ select.form-control {
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  /* Removed scroll-behavior: smooth - using JS smooth scrolling instead */
 }
 
 body {
@@ -3577,20 +3577,16 @@ select.form-control:focus {
     }
 }
 
-/* Sticky Contact Button */
+/* Sticky Contact Button - Clean CSS-only approach */
 .sticky-contact {
-    position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    display: block !important;
-    visibility: visible !important;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999;
+    opacity: 1;
+    display: block;
+    visibility: visible;
     transition: all 0.3s ease;
-    /* Remove conflicting positioning that interferes with JavaScript */
-    top: auto !important;
-    left: auto !important;
 }
 
 .sticky-contact.visible {
@@ -3651,3 +3647,6 @@ select.form-control:focus {
 * {
   transition: border-color var(--transition-fast);
 }
+
+
+

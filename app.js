@@ -18,47 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initBackgroundVisibility();
     initGallery();
     
-    // Start background monitoring to prevent overrides
-    startBackgroundMonitoring();
 });
 
-// Monitor and fix background continuously
-function startBackgroundMonitoring() {
-    // Set backgrounds for all sections
-    setAllSectionBackgrounds();
-    
-    setInterval(() => {
-        const heroBackground = document.querySelector('.hero__background');
-        const heroSection = document.querySelector('.hero');
-        
-        if (heroBackground && heroSection) {
-            const computed = getComputedStyle(heroBackground);
-            
-            // Check if background was overridden
-            if (computed.background.includes('gradient') && !computed.background.includes('#2c5530')) {
-                heroBackground.style.setProperty('background', '#2c5530', 'important');
-                heroBackground.style.setProperty('background-color', '#2c5530', 'important');
-                heroSection.style.setProperty('background', '#2c5530', 'important');
-                heroSection.style.setProperty('background-color', '#2c5530', 'important');
-            }
-        }
-    }, 100); // Check every 100ms
-}
-
-// Set beautiful backgrounds for all sections
-function setAllSectionBackgrounds() {
-    
-    // Hero section - keep the green we already have
-    const heroSection = document.querySelector('.hero');
-    if (heroSection) {
-        heroSection.style.setProperty('background', '#2c5530', 'important');
-        heroSection.style.setProperty('background-color', '#2c5530', 'important');
-    }
-    
-    // Remove all background images - use clean CSS gradients only
-    // Background images removed for cleaner, faster loading design
-    
-}
 
 // Mobile Navigation
 function initMobileNavigation() {
@@ -488,20 +449,15 @@ function initSmoothScrolling() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                // Check backgrounds before scrolling
-                initBackgroundVisibility();
-                
                 const header = document.querySelector('.header');
                 const headerHeight = header ? header.offsetHeight : 70;
-                const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                
-                // Add smooth scroll with easing
-                smoothScrollTo(Math.max(0, targetPosition), 800);
-                
-                // Check backgrounds again after scroll starts
-                setTimeout(() => {
-                    initBackgroundVisibility();
-                }, 100);
+                const rect = targetElement.getBoundingClientRect();
+                const absoluteY = window.pageYOffset + rect.top;
+                const top = Math.max(0, absoluteY - headerHeight - 20);
+                window.scrollTo({ top, behavior: 'smooth' });
+                if (history && history.pushState) {
+                    history.pushState(null, '', targetId);
+                }
             }
         });
     });
@@ -520,20 +476,7 @@ function smoothScrollTo(target, duration) {
         const val = easeInOutQuad(currentTime, start, distance, duration);
         window.scrollTo(0, val);
         
-        // Force sticky button visibility during scroll
-        if (stickyContact) {
-            stickyContact.style.cssText = `
-                position: fixed !important;
-                bottom: 20px !important;
-                right: 20px !important;
-                z-index: 1000 !important;
-                opacity: 1 !important;
-                display: block !important;
-                visibility: visible !important;
-                pointer-events: auto !important;
-                transform: translateY(0) !important;
-            `;
-        }
+        // Removed excessive styling - CSS handles positioning
         
         if (currentTime < duration) {
             requestAnimationFrame(animateScroll);
@@ -556,9 +499,10 @@ function scrollToSection(sectionId) {
     if (element) {
         const header = document.querySelector('.header');
         const headerHeight = header ? header.offsetHeight : 70;
-        const targetPosition = element.offsetTop - headerHeight - 20;
-        
-        smoothScrollTo(Math.max(0, targetPosition), 800);
+        const rect = element.getBoundingClientRect();
+        const absoluteY = window.pageYOffset + rect.top;
+        const top = Math.max(0, absoluteY - headerHeight - 20);
+        window.scrollTo({ top, behavior: 'smooth' });
     }
 }
 
@@ -583,12 +527,8 @@ function initHeaderScroll() {
             header.style.borderBottom = 'none';
         }
         
-        // Hide/show header on scroll
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            header.style.transform = 'translateY(-100%)';
-        } else {
-            header.style.transform = 'translateY(0)';
-        }
+        // Keep header always visible (removed hide/show logic that breaks on programmatic scroll)
+        //header.style.transform = 'translateY(0)';
         
         lastScrollY = currentScrollY;
         ticking = false;
@@ -1040,11 +980,8 @@ function handleVerticalSwipe() {
     
     // Add subtle scroll-based interactions for mobile
     if (Math.abs(swipeDistance) > threshold) {
-        // Could add mobile-specific scroll interactions here
-        document.body.style.transform = 'scale(0.995)';
-        setTimeout(() => {
-            document.body.style.transform = 'scale(1)';
-        }, 100);
+        // Removed body transform - it breaks position: fixed elements
+        // Could add mobile-specific scroll interactions here without transforms
     }
 }
 
@@ -1273,13 +1210,14 @@ function calculateRenovatedFloors() {
 // Initialize page transitions
 function initPageTransitions() {
     const links = document.querySelectorAll('a[href^="#"]');
-    
+    const mainEl = document.querySelector('main');
     links.forEach(link => {
         link.addEventListener('click', function() {
-            // Add subtle page transition effect
-            document.body.style.transform = 'scale(0.98)';
+            // Subtle effect without transforming the root; avoids breaking position: fixed
+            if (!mainEl) return;
+            mainEl.style.opacity = '0.98';
             setTimeout(() => {
-                document.body.style.transform = 'scale(1)';
+                mainEl.style.opacity = '1';
             }, 150);
         });
     });
@@ -1481,7 +1419,9 @@ function closeBlogModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Sticky Contact Button functionality - ALWAYS VISIBLE
+// Removed complex forceRepaint functions - root causes are now fixed
+
+// Sticky Contact Button functionality - Clean CSS-only approach
 function initStickyContact() {
     const stickyContact = document.getElementById('stickyContact');
     
@@ -1490,53 +1430,8 @@ function initStickyContact() {
         return;
     }
     
-    // Force visibility with proper positioning
-    stickyContact.style.cssText = `
-        position: fixed !important;
-        bottom: 20px !important;
-        right: 20px !important;
-        z-index: 1000 !important;
-        opacity: 1 !important;
-        display: block !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        transform: translateY(0) !important;
-    `;
-    
+    // Simple initialization - CSS handles the rest
     stickyContact.classList.add('visible');
-    
-    // Continuous monitoring to ensure it never disappears
-    let monitoringCount = 0;
-    setInterval(() => {
-        monitoringCount++;
-        if (stickyContact) {
-            const currentStyles = window.getComputedStyle(stickyContact);
-            const rect = stickyContact.getBoundingClientRect();
-            const isVisible = currentStyles.display !== 'none' && 
-                             currentStyles.visibility !== 'hidden' && 
-                             parseFloat(currentStyles.opacity) > 0 &&
-                             rect.width > 0 && rect.height > 0;
-            
-            if (!isVisible) {
-                console.warn(`Sticky button disappeared! Re-applying styles...`);
-            }
-            
-            // Force visibility again
-            stickyContact.style.cssText = `
-                position: fixed !important;
-                bottom: 20px !important;
-                right: 20px !important;
-                z-index: 1000 !important;
-                opacity: 1 !important;
-                display: block !important;
-                visibility: visible !important;
-                pointer-events: auto !important;
-                transform: translateY(0) !important;
-            `;
-            stickyContact.classList.add('visible');
-        }
-    }, 500);
-    
 }
 
 // Call on load
@@ -1545,26 +1440,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initBlogModal(); // Initialize blog modal functionality
     initStickyContact(); // Initialize sticky contact button
     
-    // Ensure sticky button stays visible after navigation clicks
-    document.addEventListener('click', function(e) {
-        if (e.target.matches('a[href^="#"]')) {
-            const stickyContact = document.getElementById('stickyContact');
-            if (stickyContact) {
-                // Force visibility immediately after click
-                setTimeout(() => {
-                    stickyContact.style.cssText = `
-                        position: fixed !important;
-                        bottom: 20px !important;
-                        right: 20px !important;
-                        z-index: 1000 !important;
-                        opacity: 1 !important;
-                        display: block !important;
-                        visibility: visible !important;
-                        pointer-events: auto !important;
-                        transform: translateY(0) !important;
-                    `;
-                }, 10);
-            }
-        }
-    });
+    // Removed excessive navigation handling - root causes are now fixed
+    
+    // Removed excessive reflow spam - the root causes are now fixed
 });
