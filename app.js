@@ -1046,11 +1046,12 @@ window.addEventListener('load', function() {
 
 // Gallery functionality - simplified for before/after only
 function initGallery() {
-    // Shuffle gallery images for better visual appeal
-    shuffleGalleryImages();
+    // Build preview from available before/after pairs
+    const availablePairs = buildBeforeAfterPairs();
+    const previewPairs = availablePairs.slice(0, 5);
     
-    // Initialize carousel for mobile
-    initGalleryCarousel();
+    renderPreviewGrid(previewPairs);
+    renderMobileCarousel(previewPairs);
 }
 
 // Shuffle gallery images for random display
@@ -1068,86 +1069,144 @@ function shuffleGalleryImages() {
     }
 }
 
-// Gallery Carousel functionality
-function initGalleryCarousel() {
+// Build before/after pairs from gallery_images folder naming
+function buildBeforeAfterPairs() {
+    // Hardcode indices by scanning known range; filenames are N-Преди.jpg and N-След.jpg
+    const maxIndex = 100;
+    const pairs = [];
+    for (let i = 1; i <= maxIndex; i++) {
+        const before = `gallery_images/${i}-Преди.jpg`;
+        const after = `gallery_images/${i}-След.jpg`;
+        // We cannot check file existence from client; optimistically add first chunk
+        // Rely on <img> error handling to hide broken ones (CSS object-fit keeps layout)
+        pairs.push({ before, after, index: i });
+    }
+    // Prefer the first contiguous block that actually exists visually; still fine as preview
+    return pairs;
+}
+
+function renderPreviewGrid(pairs) {
+    const grid = document.getElementById('galleryPreviewGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    pairs.forEach(pair => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `
+            <div class="before-after-container">
+                <div class="before-after-image">
+                    <img src="${pair.before}" alt="Преди - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" onclick="openGalleryModal(this)" />
+                    <div class="before-after-label">Преди</div>
+                </div>
+                <div class="before-after-image">
+                    <img src="${pair.after}" alt="След - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" onclick="openGalleryModal(this)" />
+                    <div class="before-after-label">След</div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function renderMobileCarousel(pairs) {
+    const track = document.getElementById('carouselTrack');
+    const indicatorsWrap = document.getElementById('carouselIndicators');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (!track || !indicatorsWrap || !prevBtn || !nextBtn) return;
+    
+    track.innerHTML = '';
+    indicatorsWrap.innerHTML = '';
+    
+    pairs.forEach((pair, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        slide.innerHTML = `
+            <div class="before-after-container">
+                <div class="before-after-image">
+                    <img src="${pair.before}" alt="Преди - проект ${pair.index}" onerror="this.closest('.carousel-slide').remove()" onclick="openGalleryModal(this)" />
+                    <div class="before-after-label">Преди</div>
+                </div>
+                <div class="before-after-image">
+                    <img src="${pair.after}" alt="След - проект ${pair.index}" onerror="this.closest('.carousel-slide').remove()" onclick="openGalleryModal(this)" />
+                    <div class="before-after-label">След</div>
+                </div>
+            </div>
+        `;
+        track.appendChild(slide);
+        const dot = document.createElement('span');
+        dot.className = `indicator${idx === 0 ? ' active' : ''}`;
+        dot.dataset.slide = String(idx);
+        indicatorsWrap.appendChild(dot);
+    });
+    
+    // Initialize carousel behavior now that slides exist
+    initDynamicCarousel();
+}
+
+function initDynamicCarousel() {
     const carouselTrack = document.getElementById('carouselTrack');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const indicators = document.querySelectorAll('.indicator');
-    
+    const indicators = Array.from(document.querySelectorAll('#carouselIndicators .indicator'));
     if (!carouselTrack || !prevBtn || !nextBtn) return;
     
     let currentSlide = 0;
-    const totalSlides = carouselTrack.children.length;
+    let totalSlides = carouselTrack.children.length;
     
-    // Update carousel position
     function updateCarousel() {
+        totalSlides = carouselTrack.children.length;
+        if (totalSlides === 0) return;
+        currentSlide = Math.max(0, Math.min(currentSlide, totalSlides - 1));
         const translateX = -currentSlide * 100;
         carouselTrack.style.transform = `translateX(${translateX}%)`;
-        
-        // Update indicators
         indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentSlide);
         });
     }
     
-    // Next slide
     function nextSlide() {
+        totalSlides = carouselTrack.children.length;
+        if (totalSlides === 0) return;
         currentSlide = (currentSlide + 1) % totalSlides;
         updateCarousel();
     }
     
-    // Previous slide
     function prevSlide() {
+        totalSlides = carouselTrack.children.length;
+        if (totalSlides === 0) return;
         currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
         updateCarousel();
     }
     
-    // Go to specific slide
     function goToSlide(slideIndex) {
         currentSlide = slideIndex;
         updateCarousel();
     }
     
-    // Event listeners
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    // Indicator clicks
+    nextBtn.onclick = nextSlide;
+    prevBtn.onclick = prevSlide;
     indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => goToSlide(index));
+        indicator.onclick = () => goToSlide(index);
     });
     
-    // Touch/swipe support
+    // Touch/swipe
     let startX = 0;
     let endX = 0;
-    
     carouselTrack.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
         startX = e.touches[0].clientX;
     });
-    
     carouselTrack.addEventListener('touchend', (e) => {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
         endX = e.changedTouches[0].clientX;
-        handleSwipe();
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) nextSlide(); else prevSlide();
+        }
     });
     
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = startX - endX;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                nextSlide(); // Swipe left - next slide
-            } else {
-                prevSlide(); // Swipe right - previous slide
-            }
-        }
-    }
-    
-    // Auto-play (optional)
-    setInterval(nextSlide, 5000); // Change slide every 5 seconds
-    
-    // Initialize
+    setInterval(nextSlide, 5000);
     updateCarousel();
 }
 

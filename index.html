@@ -620,184 +620,26 @@
                     <p>Нашите работи и професионално оборудване</p>
                 </div>
                 <div class="gallery-content">
-                    <!-- Desktop Grid View -->
-                    <div class="gallery-grid desktop-only">
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="gallery_images/1/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="gallery_images/1/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="gallery_images/2/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="gallery_images/2/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="gallery_images/3/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="gallery_images/3/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_4.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_5.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_6.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_7.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="gallery-item">
-                            <div class="before-after-container">
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_8.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">Преди</div>
-                                </div>
-                                <div class="before-after-image">
-                                    <img src="downloaded_images/image_9.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                    <div class="before-after-label">След</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Desktop Grid View (populated by JS) -->
+                    <div class="gallery-grid desktop-only" id="galleryPreviewGrid"></div>
                     
-                    <!-- Mobile Carousel View -->
+                    <!-- Mobile Carousel View (populated by JS) -->
                     <div class="gallery-carousel mobile-only">
                         <div class="carousel-container">
-                            <div class="carousel-track" id="carouselTrack">
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/1/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/1/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/2/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/2/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/3/before.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="gallery_images/3/after.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_4.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_5.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_6.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_7.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="carousel-slide">
-                                    <div class="before-after-container">
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_8.jpg" alt="Паркет преди циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">Преди</div>
-                                        </div>
-                                        <div class="before-after-image">
-                                            <img src="downloaded_images/image_9.jpg" alt="Паркет след циклене" onclick="openGalleryModal(this)" />
-                                            <div class="before-after-label">След</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="carousel-track" id="carouselTrack"></div>
                             
                             <!-- Carousel Controls -->
                             <button class="carousel-btn carousel-btn--prev" id="prevBtn">‹</button>
                             <button class="carousel-btn carousel-btn--next" id="nextBtn">›</button>
                             
                             <!-- Carousel Indicators -->
-                            <div class="carousel-indicators">
-                                <span class="indicator active" data-slide="0"></span>
-                                <span class="indicator" data-slide="1"></span>
-                                <span class="indicator" data-slide="2"></span>
-                                <span class="indicator" data-slide="3"></span>
-                                <span class="indicator" data-slide="4"></span>
-                                <span class="indicator" data-slide="5"></span>
-                            </div>
+                            <div class="carousel-indicators" id="carouselIndicators"></div>
                         </div>
+                    </div>
+                    
+                    <!-- More button -->
+                    <div class="gallery-actions" style="text-align:center; margin-top: 20px;">
+                        <a class="btn btn--orange" href="full-gallery.html">Виж още проекти</a>
                     </div>
                 </div>
             </div>
