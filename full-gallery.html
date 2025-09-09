@@ -8,25 +8,75 @@
   <style>
     .full-gallery-wrapper { 
       padding: 40px 0; 
+      margin-top: 80px;
       background: linear-gradient(135deg, rgba(248, 249, 250, 0.95), rgba(233, 236, 239, 0.95));
     }
     .full-gallery-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      display: flex;
+      flex-direction: column;
       gap: 40px;
       margin-top: 40px;
+      align-items: center;
     }
     @media (max-width: 768px) { 
       .full-gallery-container { 
-        grid-template-columns: 1fr; 
         gap: 30px;
       }
     }
     @media (max-width: 480px) {
       .full-gallery-container {
-        grid-template-columns: 1fr;
         gap: 20px;
       }
+    }
+    
+    /* Ensure images are visible in full gallery */
+    .full-gallery-slider .before-after-slide__before,
+    .full-gallery-slider .before-after-slide__after {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
+    
+    /* Removed static clip-path - let JavaScript control it */
+    .full-gallery-slider .before-after-slide__before {
+      /* clip-path will be set by JavaScript */
+    }
+    
+    .full-gallery-slider .before-after-slide__after {
+      /* clip-path will be set by JavaScript */
+    }
+    
+    .full-gallery-slider .before-after-slide__container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      min-height: 400px;
+      background: #f0f0f0;
+    }
+    
+    .full-gallery-slider {
+      min-height: 400px;
+      background: #f0f0f0;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    .full-gallery-container .before-after-container {
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    .full-gallery-slider .before-after-slide {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
   </style>
   </head>
@@ -72,11 +122,18 @@
 
       function initFullGallery() {
         const container = document.getElementById('fullGalleryContainer');
-        if (!container) return;
+        if (!container) {
+          console.log('Container not found');
+          return;
+        }
+
+        console.log('Initializing full gallery...');
 
         // Build before/after pairs
         const pairs = buildBeforeAfterPairs();
-        const validPairs = pairs.slice(0, 20); // Show first 20 pairs
+        const validPairs = pairs.slice(5, 69); // Show first 20 pairs
+
+        console.log('Found pairs:', validPairs.length);
 
         // Render individual sliders
         validPairs.forEach((pair, index) => {
@@ -86,8 +143,8 @@
             <div class="before-after-slider full-gallery-slider">
               <div class="before-after-slide active">
                 <div class="before-after-slide__container">
-                  <img src="${pair.before}" alt="Преди - проект ${pair.index}" class="before-after-slide__before" />
-                  <img src="${pair.after}" alt="След - проект ${pair.index}" class="before-after-slide__after" />
+                  <img src="${pair.before}" alt="Преди - проект ${pair.index}" class="before-after-slide__before" onload="console.log('Before image loaded:', this.src)" onerror="console.log('Before image failed:', this.src); this.parentElement.parentElement.parentElement.parentElement.style.display='none'" />
+                  <img src="${pair.after}" alt="След - проект ${pair.index}" class="before-after-slide__after" onload="console.log('After image loaded:', this.src)" onerror="console.log('After image failed:', this.src); this.parentElement.parentElement.parentElement.parentElement.style.display='none'" />
                   <div class="before-after-slide__handle"></div>
                   <div class="before-after-slide__labels">
                     <div class="before-after-slide__label before-after-slide__label--before">Преди нас</div>
@@ -100,8 +157,12 @@
           container.appendChild(sliderWrapper);
         });
 
-        // Initialize drag functionality for all sliders
-        initFullGalleryDrag();
+        console.log('Sliders rendered, initializing hover...');
+
+        // Initialize mouse hover functionality for all sliders
+        setTimeout(() => {
+          initFullGalleryHover();
+        }, 100);
       }
 
       function buildBeforeAfterPairs() {
@@ -116,10 +177,12 @@
         return pairs;
       }
 
-      function initFullGalleryDrag() {
+      function initFullGalleryHover() {
         const sliders = document.querySelectorAll('.full-gallery-slider');
         
-        sliders.forEach(slider => {
+        console.log('Found sliders:', sliders.length);
+        
+        sliders.forEach((slider, index) => {
           const container = slider.querySelector('.before-after-slide__container');
           const beforeImg = slider.querySelector('.before-after-slide__before');
           const afterImg = slider.querySelector('.before-after-slide__after');
@@ -127,19 +190,34 @@
           const beforeLabel = slider.querySelector('.before-after-slide__label--before');
           const afterLabel = slider.querySelector('.before-after-slide__label--after');
           
-          if (!container || !beforeImg || !afterImg || !handle) return;
+          console.log(`Slider ${index + 1} elements:`, {
+            container: !!container,
+            beforeImg: !!beforeImg,
+            afterImg: !!afterImg,
+            handle: !!handle,
+            beforeLabel: !!beforeLabel,
+            afterLabel: !!afterLabel
+          });
           
-          let isDragging = false;
-          let startX = 0;
-          let currentX = 0;
+          if (!container || !beforeImg || !afterImg || !handle) {
+            console.log(`Slider ${index + 1} missing elements, skipping`);
+            return;
+          }
           
           function updateSliderPosition(x) {
             const rect = container.getBoundingClientRect();
             const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
             
-            beforeImg.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-            afterImg.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+            console.log(`Updating slider ${index + 1} position:`, { x, percentage, rectWidth: rect.width });
+            
+            // Apply clip-path with !important to override any CSS conflicts
+            beforeImg.style.setProperty('clip-path', `inset(0 ${100 - percentage}% 0 0)`, 'important');
+            afterImg.style.setProperty('clip-path', `inset(0 0 0 ${percentage}%)`, 'important');
             handle.style.left = `${percentage}%`;
+            
+            // Debug: Check if clip-path is actually applied
+            console.log('Before img clip-path:', beforeImg.style.clipPath);
+            console.log('After img clip-path:', afterImg.style.clipPath);
             
             // Update label visibility
             if (percentage < 20) {
@@ -154,52 +232,64 @@
             }
           }
           
-          function startDrag(e) {
-            isDragging = true;
-            startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-            currentX = startX;
-            
-            container.style.cursor = 'grabbing';
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', endDrag);
-            document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('touchend', endDrag);
-            
-            e.preventDefault();
-          }
-          
-          function drag(e) {
-            if (!isDragging) return;
-            
-            currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+          function handleMouseMove(e) {
             const rect = container.getBoundingClientRect();
-            const x = currentX - rect.left;
-            
+            const x = e.clientX - rect.left;
             updateSliderPosition(x);
-            e.preventDefault();
           }
           
-          function endDrag() {
-            if (!isDragging) return;
-            
-            isDragging = false;
-            container.style.cursor = 'grab';
-            document.removeEventListener('mousemove', drag);
-            document.removeEventListener('mouseup', endDrag);
-            document.removeEventListener('touchmove', drag);
-            document.removeEventListener('touchend', endDrag);
+          function handleTouchMove(e) {
+            if (e.touches.length > 0) {
+              const rect = container.getBoundingClientRect();
+              const x = e.touches[0].clientX - rect.left;
+              updateSliderPosition(x);
+            }
           }
           
-          // Event listeners
-          handle.addEventListener('mousedown', startDrag);
-          handle.addEventListener('touchstart', startDrag);
-          container.addEventListener('mousedown', startDrag);
-          container.addEventListener('touchstart', startDrag);
-          
-          // Initialize at 50%
-          setTimeout(() => {
+          // Mouse events
+          container.addEventListener('mousemove', (e) => {
+            console.log('Mouse move detected on slider', index + 1);
+            handleMouseMove(e);
+          });
+          container.addEventListener('mouseleave', () => {
+            console.log('Mouse leave detected on slider', index + 1);
+            // Reset to 50% when mouse leaves
             updateSliderPosition(container.getBoundingClientRect().width / 2);
-          }, 100);
+          });
+          
+          // Touch events for mobile
+          container.addEventListener('touchmove', (e) => {
+            console.log('Touch move detected on slider', index + 1);
+            handleTouchMove(e);
+          }, { passive: false });
+          container.addEventListener('touchend', () => {
+            console.log('Touch end detected on slider', index + 1);
+            // Reset to 50% when touch ends
+            updateSliderPosition(container.getBoundingClientRect().width / 2);
+          });
+          
+          console.log(`Event listeners attached to slider ${index + 1}`);
+          
+          // Initialize at 50% and ensure images are visible
+          setTimeout(() => {
+            const rect = container.getBoundingClientRect();
+            if (rect.width > 0) {
+              updateSliderPosition(rect.width / 2);
+            }
+            
+            // Ensure images are visible and properly clipped
+            beforeImg.style.opacity = '1';
+            afterImg.style.opacity = '1';
+            beforeImg.style.visibility = 'visible';
+            afterImg.style.visibility = 'visible';
+            
+            // Set initial clip-path with !important
+            beforeImg.style.setProperty('clip-path', 'inset(0 50% 0 0)', 'important');
+            afterImg.style.setProperty('clip-path', 'inset(0 0 0 50%)', 'important');
+            
+            console.log(`Initialized slider ${index + 1} with 50/50 split`);
+            
+          }, 200);
         });
       }
     </script>

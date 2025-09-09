@@ -1501,11 +1501,6 @@ body {
   z-index: -1;
 }
 
-.pricing .section-header h2,
-.pricing .section-header p {
-  color: var(--color-white);
-}
-
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2618,12 +2613,8 @@ textarea.form-control {
     width: 100%;
     height: 500px;
     overflow: hidden;
-    cursor: grab;
+    cursor: default;
     user-select: none;
-}
-
-.before-after-slider:active {
-    cursor: grabbing;
 }
 
 .before-after-slide {
@@ -2642,6 +2633,7 @@ textarea.form-control {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    cursor: default !important;
 }
 
 .before-after-slide__before,
@@ -2670,7 +2662,7 @@ textarea.form-control {
     width: 4px;
     height: 100%;
     background: var(--color-white);
-    cursor: ew-resize;
+    cursor: default;
     z-index: 10;
     transform: translateX(-50%);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -2863,8 +2855,8 @@ textarea.form-control {
     }
 }
 
-/* Before/After Comparison Styles with Animation */
-.before-after-container {
+/* Before/After Comparison Styles with Animation - OLD GALLERY STYLE - DISABLED */
+.before-after-container.old-gallery-style {
     display: flex;
     gap: var(--space-4);
     margin-bottom: var(--space-6);
@@ -2872,11 +2864,11 @@ textarea.form-control {
     overflow: hidden;
     box-shadow: var(--shadow-lg);
     position: relative;
-    cursor: pointer;
+    cursor: default;
     transition: all 0.3s ease;
 }
 
-.before-after-container:hover {
+.before-after-container.old-gallery-style:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
@@ -2948,9 +2940,9 @@ textarea.form-control {
     background: linear-gradient(transparent, rgba(34, 197, 94, 0.9));
 }
 
-/* Slider Animation Effect */
-.before-after-container::after {
-    content: '👆';
+/* Slider Animation Effect - Removed finger emoji - OLD GALLERY STYLE */
+.before-after-container.old-gallery-style::after {
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -2963,8 +2955,8 @@ textarea.form-control {
     animation: pulse 2s infinite;
 }
 
-.before-after-container:hover::after {
-    opacity: 0.8;
+.before-after-container.old-gallery-style:hover::after {
+    opacity: 0;
 }
 
 @keyframes pulse {
@@ -3017,8 +3009,8 @@ textarea.form-control {
         text-align: center;
     }
     
-    /* Mobile responsive for before/after */
-    .before-after-container {
+    /* Mobile responsive for before/after - OLD GALLERY STYLE */
+    .before-after-container.old-gallery-style {
         flex-direction: column;
         gap: var(--space-2);
     }

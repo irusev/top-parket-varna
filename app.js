@@ -1097,8 +1097,8 @@ function renderBeforeAfterSlider(pairs) {
         
         slide.innerHTML = `
             <div class="before-after-slide__container">
-                <img src="${pair.before}" alt="Преди - проект ${pair.index}" class="before-after-slide__before" />
-                <img src="${pair.after}" alt="След - проект ${pair.index}" class="before-after-slide__after" />
+                <img src="${pair.before}" alt="Преди - проект ${pair.index}" class="before-after-slide__before" onerror="this.parentElement.parentElement.parentElement.style.display='none'" />
+                <img src="${pair.after}" alt="След - проект ${pair.index}" class="before-after-slide__after" onerror="this.parentElement.parentElement.parentElement.style.display='none'" />
                 <div class="before-after-slide__handle"></div>
                 <div class="before-after-slide__labels">
                     <div class="before-after-slide__label before-after-slide__label--before">Преди нас</div>
@@ -1171,7 +1171,7 @@ function initSliderControls(totalSlides) {
     updateSlider();
 }
 
-// Initialize drag functionality for before/after comparison
+// Initialize hover functionality for before/after comparison
 function initSliderDrag() {
     const slides = document.querySelectorAll('.before-after-slide');
     
@@ -1184,10 +1184,6 @@ function initSliderDrag() {
         const afterLabel = slide.querySelector('.before-after-slide__label--after');
         
         if (!container || !beforeImg || !afterImg || !handle) return;
-        
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
         
         function updateSliderPosition(x) {
             const rect = container.getBoundingClientRect();
@@ -1210,49 +1206,38 @@ function initSliderDrag() {
             }
         }
         
-        function startDrag(e) {
+        function handleMouseMove(e) {
             if (!slide.classList.contains('active')) return;
             
-            isDragging = true;
-            startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-            currentX = startX;
-            
-            container.style.cursor = 'grabbing';
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', endDrag);
-            document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('touchend', endDrag);
-            
-            e.preventDefault();
-        }
-        
-        function drag(e) {
-            if (!isDragging) return;
-            
-            currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
             const rect = container.getBoundingClientRect();
-            const x = currentX - rect.left;
-            
+            const x = e.clientX - rect.left;
             updateSliderPosition(x);
-            e.preventDefault();
         }
         
-        function endDrag() {
-            if (!isDragging) return;
+        function handleTouchMove(e) {
+            if (!slide.classList.contains('active')) return;
             
-            isDragging = false;
-            container.style.cursor = 'grab';
-            document.removeEventListener('mousemove', drag);
-            document.removeEventListener('mouseup', endDrag);
-            document.removeEventListener('touchmove', drag);
-            document.removeEventListener('touchend', endDrag);
+            if (e.touches.length > 0) {
+                const rect = container.getBoundingClientRect();
+                const x = e.touches[0].clientX - rect.left;
+                updateSliderPosition(x);
+            }
         }
         
-        // Event listeners
-        handle.addEventListener('mousedown', startDrag);
-        handle.addEventListener('touchstart', startDrag);
-        container.addEventListener('mousedown', startDrag);
-        container.addEventListener('touchstart', startDrag);
+        function resetSlider() {
+            if (!slide.classList.contains('active')) return;
+            
+            // Reset to 50% when mouse leaves or touch ends
+            updateSliderPosition(container.getBoundingClientRect().width / 2);
+        }
+        
+        // Mouse events
+        container.addEventListener('mousemove', handleMouseMove);
+        container.addEventListener('mouseleave', resetSlider);
+        
+        // Touch events for mobile
+        container.addEventListener('touchmove', handleTouchMove, { passive: false });
+        container.addEventListener('touchend', resetSlider);
         
         // Initialize at 50%
         updateSliderPosition(container.getBoundingClientRect().width / 2);
