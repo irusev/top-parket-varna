@@ -1045,170 +1045,218 @@ window.addEventListener('load', function() {
     }, 100);
 });
 
-// Gallery functionality - simplified for before/after only
+// Before/After Slider functionality
 function initGallery() {
-    // Build preview from available before/after pairs
-    const availablePairs = buildBeforeAfterPairs();
-    const previewPairs = availablePairs.slice(0, 5);
-    
-    renderPreviewGrid(previewPairs);
-    renderMobileCarousel(previewPairs);
+    initBeforeAfterSlider();
 }
 
-// Shuffle gallery images for random display
-function shuffleGalleryImages() {
-    const galleryGrid = document.querySelector('.gallery-grid');
+// Initialize Before/After Slider
+function initBeforeAfterSlider() {
+    const slider = document.getElementById('beforeAfterSlider');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    const indicators = document.getElementById('sliderIndicators');
     
-    if (galleryGrid) {
-        const items = Array.from(galleryGrid.children);
-        
-        // Fisher-Yates shuffle algorithm
-        for (let i = items.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            galleryGrid.appendChild(items[j]);
-        }
-    }
+    if (!slider) return;
+    
+    // Build before/after pairs
+    const pairs = buildBeforeAfterPairs();
+    const validPairs = pairs.slice(0, 5); // Show first 5 pairs
+    
+    // Render slider
+    renderBeforeAfterSlider(validPairs);
+    
+    // Initialize controls
+    initSliderControls(validPairs.length);
 }
 
-// Build before/after pairs from gallery_images folder naming
+// Build before/after pairs from gallery_images folder
 function buildBeforeAfterPairs() {
-    // Hardcode indices by scanning known range; filenames are N-Преди.jpg and N-След.jpg
-    const maxIndex = 100;
     const pairs = [];
-    for (let i = 1; i <= maxIndex; i++) {
-        const before = `gallery_images/${i}-Преди.jpg`;
-        const after = `gallery_images/${i}-След.jpg`;
-        // We cannot check file existence from client; optimistically add first chunk
-        // Rely on <img> error handling to hide broken ones (CSS object-fit keeps layout)
-        pairs.push({ before, after, index: i });
+    for (let i = 1; i <= 50; i++) {
+        pairs.push({
+            before: `gallery_images/${i}-Преди.jpg`,
+            after: `gallery_images/${i}-След.jpg`,
+            index: i
+        });
     }
-    // Prefer the first contiguous block that actually exists visually; still fine as preview
     return pairs;
 }
 
-function renderPreviewGrid(pairs) {
-    const grid = document.getElementById('galleryPreviewGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    pairs.forEach(pair => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.innerHTML = `
-            <div class="before-after-container">
-                <div class="before-after-image">
-                    <img src="${pair.before}" alt="Преди - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" onclick="openGalleryModal(this)" />
-                    <div class="before-after-label">Преди</div>
-                </div>
-                <div class="before-after-image">
-                    <img src="${pair.after}" alt="След - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" onclick="openGalleryModal(this)" />
-                    <div class="before-after-label">След</div>
-                </div>
-            </div>
-        `;
-        grid.appendChild(item);
-    });
-}
-
-function renderMobileCarousel(pairs) {
-    const track = document.getElementById('carouselTrack');
-    const indicatorsWrap = document.getElementById('carouselIndicators');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    if (!track || !indicatorsWrap || !prevBtn || !nextBtn) return;
+// Render the before/after slider
+function renderBeforeAfterSlider(pairs) {
+    const slider = document.getElementById('beforeAfterSlider');
+    if (!slider) return;
     
-    track.innerHTML = '';
-    indicatorsWrap.innerHTML = '';
+    slider.innerHTML = '';
     
-    pairs.forEach((pair, idx) => {
+    pairs.forEach((pair, index) => {
         const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
+        slide.className = 'before-after-slide';
+        if (index === 0) slide.classList.add('active');
+        
         slide.innerHTML = `
-            <div class="before-after-container">
-                <div class="before-after-image">
-                    <img src="${pair.before}" alt="Преди - проект ${pair.index}" onerror="this.closest('.carousel-slide').remove()" onclick="openGalleryModal(this)" />
-                    <div class="before-after-label">Преди</div>
-                </div>
-                <div class="before-after-image">
-                    <img src="${pair.after}" alt="След - проект ${pair.index}" onerror="this.closest('.carousel-slide').remove()" onclick="openGalleryModal(this)" />
-                    <div class="before-after-label">След</div>
+            <div class="before-after-slide__container">
+                <img src="${pair.before}" alt="Преди - проект ${pair.index}" class="before-after-slide__before" />
+                <img src="${pair.after}" alt="След - проект ${pair.index}" class="before-after-slide__after" />
+                <div class="before-after-slide__handle"></div>
+                <div class="before-after-slide__labels">
+                    <div class="before-after-slide__label before-after-slide__label--before">Преди нас</div>
+                    <div class="before-after-slide__label before-after-slide__label--after">След нас</div>
                 </div>
             </div>
         `;
-        track.appendChild(slide);
-        const dot = document.createElement('span');
-        dot.className = `indicator${idx === 0 ? ' active' : ''}`;
-        dot.dataset.slide = String(idx);
-        indicatorsWrap.appendChild(dot);
+        
+        slider.appendChild(slide);
     });
     
-    // Initialize carousel behavior now that slides exist
-    initDynamicCarousel();
+    // Initialize drag functionality for each slide
+    initSliderDrag();
 }
 
-function initDynamicCarousel() {
-    const carouselTrack = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const indicators = Array.from(document.querySelectorAll('#carouselIndicators .indicator'));
-    if (!carouselTrack || !prevBtn || !nextBtn) return;
+// Initialize slider controls (navigation and indicators)
+function initSliderControls(totalSlides) {
+    const slider = document.getElementById('beforeAfterSlider');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    const indicators = document.getElementById('sliderIndicators');
+    
+    if (!slider || !prevBtn || !nextBtn || !indicators) return;
     
     let currentSlide = 0;
-    let totalSlides = carouselTrack.children.length;
+    const slides = slider.querySelectorAll('.before-after-slide');
     
-    function updateCarousel() {
-        totalSlides = carouselTrack.children.length;
-        if (totalSlides === 0) return;
-        currentSlide = Math.max(0, Math.min(currentSlide, totalSlides - 1));
-        const translateX = -currentSlide * 100;
-        carouselTrack.style.transform = `translateX(${translateX}%)`;
-        indicators.forEach((indicator, index) => {
+    // Create indicators
+    indicators.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+        const indicator = document.createElement('button');
+        indicator.className = 'slider-indicator';
+        if (i === 0) indicator.classList.add('active');
+        indicator.addEventListener('click', () => goToSlide(i));
+        indicators.appendChild(indicator);
+    }
+    
+    function goToSlide(index) {
+        currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
+        updateSlider();
+    }
+    
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    }
+    
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlider();
+    }
+    
+    function updateSlider() {
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentSlide);
+        });
+        
+        // Update indicators
+        const indicatorButtons = indicators.querySelectorAll('.slider-indicator');
+        indicatorButtons.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentSlide);
         });
     }
     
-    function nextSlide() {
-        totalSlides = carouselTrack.children.length;
-        if (totalSlides === 0) return;
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
-    }
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
     
-    function prevSlide() {
-        totalSlides = carouselTrack.children.length;
-        if (totalSlides === 0) return;
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateCarousel();
-    }
+    // Initialize
+    updateSlider();
+}
+
+// Initialize drag functionality for before/after comparison
+function initSliderDrag() {
+    const slides = document.querySelectorAll('.before-after-slide');
     
-    function goToSlide(slideIndex) {
-        currentSlide = slideIndex;
-        updateCarousel();
-    }
-    
-    nextBtn.onclick = nextSlide;
-    prevBtn.onclick = prevSlide;
-    indicators.forEach((indicator, index) => {
-        indicator.onclick = () => goToSlide(index);
-    });
-    
-    // Touch/swipe
-    let startX = 0;
-    let endX = 0;
-    carouselTrack.addEventListener('touchstart', (e) => {
-        if (!e.touches || e.touches.length === 0) return;
-        startX = e.touches[0].clientX;
-    });
-    carouselTrack.addEventListener('touchend', (e) => {
-        if (!e.changedTouches || e.changedTouches.length === 0) return;
-        endX = e.changedTouches[0].clientX;
-        const diff = startX - endX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) nextSlide(); else prevSlide();
+    slides.forEach(slide => {
+        const container = slide.querySelector('.before-after-slide__container');
+        const beforeImg = slide.querySelector('.before-after-slide__before');
+        const afterImg = slide.querySelector('.before-after-slide__after');
+        const handle = slide.querySelector('.before-after-slide__handle');
+        const beforeLabel = slide.querySelector('.before-after-slide__label--before');
+        const afterLabel = slide.querySelector('.before-after-slide__label--after');
+        
+        if (!container || !beforeImg || !afterImg || !handle) return;
+        
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        
+        function updateSliderPosition(x) {
+            const rect = container.getBoundingClientRect();
+            const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            
+            beforeImg.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+            afterImg.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+            handle.style.left = `${percentage}%`;
+            
+            // Update label visibility
+            if (percentage < 20) {
+                beforeLabel.style.opacity = '0';
+                afterLabel.style.opacity = '1';
+            } else if (percentage > 80) {
+                beforeLabel.style.opacity = '1';
+                afterLabel.style.opacity = '0';
+            } else {
+                beforeLabel.style.opacity = '1';
+                afterLabel.style.opacity = '1';
+            }
         }
+        
+        function startDrag(e) {
+            if (!slide.classList.contains('active')) return;
+            
+            isDragging = true;
+            startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            currentX = startX;
+            
+            container.style.cursor = 'grabbing';
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            
+            e.preventDefault();
+        }
+        
+        function drag(e) {
+            if (!isDragging) return;
+            
+            currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            const rect = container.getBoundingClientRect();
+            const x = currentX - rect.left;
+            
+            updateSliderPosition(x);
+            e.preventDefault();
+        }
+        
+        function endDrag() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            container.style.cursor = 'grab';
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', endDrag);
+        }
+        
+        // Event listeners
+        handle.addEventListener('mousedown', startDrag);
+        handle.addEventListener('touchstart', startDrag);
+        container.addEventListener('mousedown', startDrag);
+        container.addEventListener('touchstart', startDrag);
+        
+        // Initialize at 50%
+        updateSliderPosition(container.getBoundingClientRect().width / 2);
     });
-    
-    // Auto-play disabled per request; advance only on user interaction
-    updateCarousel();
 }
 
 // Gallery Modal functionality

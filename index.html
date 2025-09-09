@@ -621,28 +621,25 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Галерия</h2>
-                    <p>Нашите работи и професионално оборудване</p>
+                    <p>Преди и след нашите професионални услуги</p>
                 </div>
                 <div class="gallery-content">
-                    <!-- Desktop Grid View (populated by JS) -->
-                    <div class="gallery-grid desktop-only" id="galleryPreviewGrid"></div>
-                    
-                    <!-- Mobile Carousel View (populated by JS) -->
-                    <div class="gallery-carousel mobile-only">
-                        <div class="carousel-container">
-                            <div class="carousel-track" id="carouselTrack"></div>
-                            
-                            <!-- Carousel Controls -->
-                            <button class="carousel-btn carousel-btn--prev" id="prevBtn">‹</button>
-                            <button class="carousel-btn carousel-btn--next" id="nextBtn">›</button>
-                            
-                            <!-- Carousel Indicators -->
-                            <div class="carousel-indicators" id="carouselIndicators"></div>
+                    <!-- Before/After Slider Container -->
+                    <div class="before-after-container">
+                        <div class="before-after-slider" id="beforeAfterSlider">
+                            <!-- Slider will be populated by JavaScript -->
                         </div>
+                        
+                        <!-- Navigation arrows -->
+                        <button class="slider-nav slider-nav--prev" id="sliderPrev">‹</button>
+                        <button class="slider-nav slider-nav--next" id="sliderNext">›</button>
+                        
+                        <!-- Slider indicators -->
+                        <div class="slider-indicators" id="sliderIndicators"></div>
                     </div>
                     
                     <!-- More button -->
-                    <div class="gallery-actions" style="text-align:center; margin-top: 20px;">
+                    <div class="gallery-actions" style="text-align:center; margin-top: 40px;">
                         <a class="btn btn--orange" href="full-gallery.html">Виж още проекти</a>
                     </div>
                 </div>
