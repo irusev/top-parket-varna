@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пълна Галерия | ТОП ПАРКЕТ ВАРНА</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .full-gallery-wrapper { padding: 40px 0; }
+    .full-gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    @media (max-width: 768px) { .full-gallery-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const grid = document.getElementById('fullGalleryGrid');
+      const pairs = [];
+      const maxIndex = 100;
+      for (let i = 1; i <= maxIndex; i++) {
+        pairs.push({ before: `gallery_images/${i}-Преди.jpg`, after: `gallery_images/${i}-След.jpg`, index: i });
+      }
+      pairs.forEach(pair => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `
+          <div class="before-after-container">
+            <div class="before-after-image">
+              <img src="${pair.before}" alt="Преди - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" />
+              <div class="before-after-label">Преди</div>
+            </div>
+            <div class="before-after-image">
+              <img src="${pair.after}" alt="След - проект ${pair.index}" onerror="this.parentElement.parentElement.parentElement.remove()" />
+              <div class="before-after-label">След</div>
+            </div>
+          </div>`;
+        grid.appendChild(item);
+      });
+    });
+  </script>
+  </head>
+  <body>
+    <header class="header" id="header">
+      <div class="container">
+        <div class="header__content">
+          <div class="header__logo"><h1>ТОП ПАРКЕТ ВАРНА</h1></div>
+          <nav class="header__nav" id="nav">
+            <ul class="nav__list">
+              <li><a href="index.html#home">Начало</a></li>
+              <li><a href="index.html#services">Услуги</a></li>
+              <li><a href="index.html#gallery">Галерия</a></li>
+              <li><a href="index.html#pricing">Цени</a></li>
+              <li><a href="index.html#testimonials">За нас</a></li>
+              <li><a href="index.html#contact">Контакти</a></li>
+            </ul>
+          </nav>
+          <div class="header__cta">
+            <a href="tel:0887726236" class="header__phone">0887726236</a>
+            <a class="btn btn--primary" href="index.html#contact">Заявка сега</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="full-gallery-wrapper">
+      <div class="container">
+        <div class="section-header">
+          <h2>Пълна Галерия</h2>
+          <p>Преди и след от наши реални проекти</p>
+        </div>
+        <div class="full-gallery-grid" id="fullGalleryGrid"></div>
+      </div>
+    </main>
+    <div class="sticky-contact" id="stickyContact">
+      <a href="tel:0887726236" class="sticky-phone"><span class="sticky-phone__icon">📞</span></a>
+    </div>
+    <script src="app.js"></script>
+  </body>
+  </html>
+
+

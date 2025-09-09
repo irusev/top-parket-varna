@@ -1775,17 +1775,28 @@ body {
   transform: translateY(0);
 }
 
-.stat__icon {
-  font-size: 3rem;
-  margin-bottom: var(--space-2);
+.stat__diamond {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto var(--space-4);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.stat__diamond-full {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crop white margins from source images */
+  object-position: center;
   display: block;
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,0.12));
 }
 
 .stat__number {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
   font-weight: 800;
   margin-bottom: var(--space-2);
-  color: var(--color-orange);
+  color: #f2b34a;
   display: block;
   line-height: 1;
   transition: transform 0.3s ease;
@@ -1796,11 +1807,12 @@ body {
 }
 
 .stat__label {
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2c5530; /* ensure visible on light backgrounds */
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-top: var(--space-2);
 }
 
 @keyframes statsPulse {
@@ -2212,6 +2224,9 @@ textarea.form-control {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .stat__diamond { width: 130px; height: 130px; }
+  .stat__number { font-size: 2.4rem; }
+  .stat__label { font-size: 0.95rem; }
 
   .footer__content {
     grid-template-columns: 1fr;
@@ -2229,6 +2244,9 @@ textarea.form-control {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+  .stat__diamond { width: 110px; height: 110px; }
+  .stat__number { font-size: 2.2rem; }
+  .stat__label { font-size: 0.9rem; }
 
   .hero__title {
     font-size: 2rem;

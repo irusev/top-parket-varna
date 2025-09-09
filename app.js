@@ -418,12 +418,13 @@ function animateCounter(element) {
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const current = Math.floor(easeOutQuart * target);
         
-        element.textContent = current;
+        const suffix = element.getAttribute('data-suffix') || '';
+        element.textContent = `${current}${suffix}`;
         
         if (progress < 1) {
             requestAnimationFrame(update);
         } else {
-            element.textContent = target;
+            element.textContent = `${target}${suffix}`;
             // Add pulse effect when animation completes
             element.classList.add('pulse');
             setTimeout(() => {
@@ -1206,7 +1207,7 @@ function initDynamicCarousel() {
         }
     });
     
-    setInterval(nextSlide, 5000);
+    // Auto-play disabled per request; advance only on user interaction
     updateCarousel();
 }
 
