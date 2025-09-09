@@ -382,7 +382,7 @@
                     <div class="testimonial-card">
                         <div class="testimonial__content">
                             <div class="testimonial__quote">
-                                <p>"Отлично качество и професионално обслужване! Паркетът изглежда като нов след цикленето. Препоръчвам топ паркет варна на всички!"</p>
+                                <p>"Отлично качество и професионално обслужване! Паркетът изглежда като нов след цикленето. Препоръчвам 'Топ паркет Варна' на всички!"</p>
                             </div>
                             <div class="testimonial__author">
                                 <div class="testimonial__avatar">ИП</div>
@@ -403,7 +403,7 @@
                     <div class="testimonial-card">
                         <div class="testimonial__content">
                             <div class="testimonial__quote">
-                                <p>"Безплатният оглед беше много полезен. Майсторите са професионалисти и завършиха работата точно в срок. Ще се обръщам отново!"</p>
+                                <p>"Безплатният оглед беше много полезен. Майсторите са професионалисти и завършиха работата точно в срок."</p>
                             </div>
                             <div class="testimonial__author">
                                 <div class="testimonial__avatar">МС</div>
@@ -863,13 +863,20 @@
         </a>
     </div>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google Analytics (foundation) -->
+    <script>
+        // Replace with your GA4 Measurement ID, e.g., 'G-XXXXXXX'
+        window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id="+window.GA_MEASUREMENT_ID></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+        function gtag(){dataLayer.push(arguments);} 
+        window.gtag = gtag;
+        if (window.GA_MEASUREMENT_ID && window.GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+            gtag('js', new Date());
+            gtag('config', window.GA_MEASUREMENT_ID);
+        }
     </script>
 
     <!-- EmailJS SDK -->

@@ -1471,6 +1471,14 @@ function openBlogModal(articleId) {
     // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Ensure body text isn't translucent due to any inherited opacity
+    const bodyEl = document.getElementById('modalBody');
+    if (bodyEl) {
+        bodyEl.style.opacity = '1';
+        bodyEl.style.background = '#ffffff';
+        bodyEl.style.color = getComputedStyle(document.body).getPropertyValue('--color-text') || '#111827';
+    }
 }
 
 function closeBlogModal() {
@@ -1503,4 +1511,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Removed excessive navigation handling - root causes are now fixed
     
     // Removed excessive reflow spam - the root causes are now fixed
+    // Google Analytics foundation: if GA_MEASUREMENT_ID is set in index.html, wire gtag
+    if (window.GA_MEASUREMENT_ID && typeof window.gtag === 'function') {
+        window.gtag('js', new Date());
+        window.gtag('config', window.GA_MEASUREMENT_ID);
+    }
 });

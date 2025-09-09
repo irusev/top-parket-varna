@@ -3414,13 +3414,13 @@ select.form-control:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
 }
 
 .blog-modal__content {
     position: relative;
-    background: white;
+    background: #ffffff;
     margin: 2rem auto;
     max-width: 800px;
     width: 90%;
@@ -3430,6 +3430,7 @@ select.form-control:focus {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     transform: translateY(20px);
     transition: transform 0.3s ease;
+    opacity: 1 !important;
 }
 
 .blog-modal.active .blog-modal__content {
@@ -3460,6 +3461,7 @@ select.form-control:focus {
     background: linear-gradient(135deg, #2c5530, #22c55e);
     color: white;
     position: relative;
+    opacity: 1 !important;
 }
 
 .blog-modal__category {
@@ -3497,6 +3499,15 @@ select.form-control:focus {
     max-height: 60vh;
     overflow-y: auto;
     line-height: 1.8;
+    background: #ffffff;
+    color: var(--color-text);
+}
+
+.blog-modal__body p,
+.blog-modal__body li,
+.blog-modal__body h3,
+.blog-modal__body h4 {
+    opacity: 1 !important;
 }
 
 .blog-modal__body h3 {
@@ -3516,6 +3527,7 @@ select.form-control:focus {
 .blog-modal__body p {
     margin-bottom: var(--space-4);
     color: var(--color-text);
+    opacity: 1 !important;
 }
 
 .blog-modal__body ul {
@@ -3526,6 +3538,7 @@ select.form-control:focus {
 .blog-modal__body li {
     margin-bottom: var(--space-2);
     color: var(--color-text);
+    opacity: 1 !important;
 }
 
 .blog-modal__body strong {
