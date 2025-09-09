@@ -1477,7 +1477,7 @@ function openBlogModal(articleId) {
     if (bodyEl) {
         bodyEl.style.opacity = '1';
         bodyEl.style.background = '#ffffff';
-        bodyEl.style.color = getComputedStyle(document.body).getPropertyValue('--color-text') || '#111827';
+        bodyEl.style.color = '#1f2937'; // Force dark text color
     }
 }
 
