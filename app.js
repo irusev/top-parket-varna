@@ -787,30 +787,9 @@ function initBackgroundVisibility() {
         element.style.visibility = 'visible';
         element.style.opacity = '1';
         
-        // Force background for hero element
+        // Skip hero background - let CSS handle it completely
         if (element.classList.contains('hero__background')) {
-            // Set background with !important to override any CSS
-            element.setAttribute('style', `
-                transform: none !important;
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                background: #2c5530 !important;
-                background-color: #2c5530 !important;
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: 0 !important;
-                z-index: -2 !important;
-            `);
-            
-            // Also set background on the hero section itself
-            const heroSection = element.parentElement;
-            if (heroSection && heroSection.classList.contains('hero')) {
-                heroSection.style.setProperty('background', '#2c5530', 'important');
-                heroSection.style.setProperty('background-color', '#2c5530', 'important');
-            }
+            return; // Skip this element entirely
         }
     });
     
@@ -1547,4 +1526,5 @@ document.addEventListener('DOMContentLoaded', function() {
         window.gtag('js', new Date());
         window.gtag('config', window.GA_MEASUREMENT_ID);
     }
+    
 });
