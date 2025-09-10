@@ -1521,10 +1521,310 @@ document.addEventListener('DOMContentLoaded', function() {
     // Removed excessive navigation handling - root causes are now fixed
     
     // Removed excessive reflow spam - the root causes are now fixed
-    // Google Analytics foundation: if GA_MEASUREMENT_ID is set in index.html, wire gtag
-    if (window.GA_MEASUREMENT_ID && typeof window.gtag === 'function') {
-        window.gtag('js', new Date());
-        window.gtag('config', window.GA_MEASUREMENT_ID);
-    }
+    // Google Analytics is now handled by cookie consent system
+    // It will only be enabled if user gives consent
+    
+    // Contact form handling
+    initContactForm();
+    
+    // Cookie consent handling
+    initCookieConsent();
     
 });
+
+// Contact Form Handler
+function initContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        // Show loading state
+        submitBtn.textContent = 'Изпраща се...';
+        submitBtn.disabled = true;
+        
+        try {
+            const formData = new FormData(form);
+            
+            // Send to Formspree
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Success
+                showMessage('Успешно изпратена заявка! Ще се свържем с вас скоро.', 'success');
+                form.reset();
+            } else {
+                // Error
+                showMessage('Възникна грешка. Моля опитайте отново или се обадете на 0887726236', 'error');
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            showMessage('Възникна грешка. Моля опитайте отново или се обадете на 0887726236', 'error');
+        } finally {
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// Show success/error messages
+function showMessage(text, type) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.form-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Create new message
+    const message = document.createElement('div');
+    message.className = `form-message form-message--${type}`;
+    message.textContent = text;
+    
+    // Add styles
+    message.style.cssText = `
+        padding: 12px 16px;
+        margin-top: 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        ${type === 'success' 
+            ? 'background: #d4edda; color: #155724; border: 1px solid #c3e6cb;' 
+            : 'background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'
+        }
+    `;
+    
+    // Insert after form
+    const form = document.getElementById('contact-form');
+    form.parentNode.insertBefore(message, form.nextSibling);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (message.parentNode) {
+            message.remove();
+        }
+    }, 5000);
+}
+
+// ==========================================================================
+// COOKIE CONSENT SYSTEM
+// ==========================================================================
+
+// Cookie consent state
+let cookieConsent = {
+    necessary: true,
+    analytics: false,
+    marketing: false
+};
+
+// Initialize cookie consent system
+function initCookieConsent() {
+    // Check if user has already given consent
+    const savedConsent = getCookieConsent();
+    if (savedConsent) {
+        cookieConsent = savedConsent;
+        if (cookieConsent.analytics) {
+            enableGoogleAnalytics();
+        }
+        return; // Don't show popup if consent already given
+    }
+    
+    // Show cookie consent popup
+    showCookieConsent();
+    
+    // Add event listeners
+    addCookieEventListeners();
+}
+
+// Show cookie consent popup
+function showCookieConsent() {
+    const popup = document.getElementById('cookieConsent');
+    if (popup) {
+        popup.classList.add('show');
+    }
+}
+
+// Hide cookie consent popup
+function hideCookieConsent() {
+    const popup = document.getElementById('cookieConsent');
+    if (popup) {
+        popup.classList.remove('show');
+    }
+}
+
+// Add event listeners for cookie consent
+function addCookieEventListeners() {
+    // Accept all cookies
+    const acceptAllBtn = document.getElementById('acceptAllCookies');
+    if (acceptAllBtn) {
+        acceptAllBtn.addEventListener('click', () => {
+            cookieConsent = {
+                necessary: true,
+                analytics: true,
+                marketing: true
+            };
+            saveCookieConsent();
+            hideCookieConsent();
+            enableGoogleAnalytics();
+        });
+    }
+    
+    // Accept necessary only
+    const acceptNecessaryBtn = document.getElementById('acceptNecessaryOnly');
+    if (acceptNecessaryBtn) {
+        acceptNecessaryBtn.addEventListener('click', () => {
+            cookieConsent = {
+                necessary: true,
+                analytics: false,
+                marketing: false
+            };
+            saveCookieConsent();
+            hideCookieConsent();
+        });
+    }
+    
+    // Customize cookies
+    const customizeBtn = document.getElementById('customizeCookies');
+    if (customizeBtn) {
+        customizeBtn.addEventListener('click', () => {
+            showCookieSettings();
+        });
+    }
+    
+    // Cookie settings modal
+    const settingsModal = document.getElementById('cookieSettings');
+    const closeSettingsBtn = document.getElementById('closeCookieSettings');
+    const saveSettingsBtn = document.getElementById('saveCookieSettings');
+    const overlay = settingsModal?.querySelector('.cookie-settings__overlay');
+    
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', hideCookieSettings);
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', hideCookieSettings);
+    }
+    
+    if (saveSettingsBtn) {
+        saveSettingsBtn.addEventListener('click', saveCookieSettings);
+    }
+}
+
+// Show cookie settings modal
+function showCookieSettings() {
+    const modal = document.getElementById('cookieSettings');
+    if (modal) {
+        // Set current state
+        const analyticsCheckbox = document.getElementById('analyticsCookies');
+        if (analyticsCheckbox) {
+            analyticsCheckbox.checked = cookieConsent.analytics;
+        }
+        
+        modal.classList.add('show');
+        hideCookieConsent();
+    }
+}
+
+// Hide cookie settings modal
+function hideCookieSettings() {
+    const modal = document.getElementById('cookieSettings');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+// Save cookie settings
+function saveCookieSettings() {
+    const analyticsCheckbox = document.getElementById('analyticsCookies');
+    
+    cookieConsent = {
+        necessary: true,
+        analytics: analyticsCheckbox ? analyticsCheckbox.checked : false,
+        marketing: false
+    };
+    
+    saveCookieConsent();
+    hideCookieSettings();
+    
+    if (cookieConsent.analytics) {
+        enableGoogleAnalytics();
+    }
+}
+
+// Save cookie consent to localStorage
+function saveCookieConsent() {
+    try {
+        localStorage.setItem('cookieConsent', JSON.stringify(cookieConsent));
+    } catch (e) {
+        console.warn('Could not save cookie consent:', e);
+    }
+}
+
+// Get cookie consent from localStorage
+function getCookieConsent() {
+    try {
+        const saved = localStorage.getItem('cookieConsent');
+        return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+        console.warn('Could not load cookie consent:', e);
+        return null;
+    }
+}
+
+// Enable Google Analytics (only if consent given)
+function enableGoogleAnalytics() {
+    if (!cookieConsent.analytics) {
+        console.log('Google Analytics disabled - no consent given');
+        return;
+    }
+    
+    if (!window.GA_MEASUREMENT_ID) {
+        console.log('Google Analytics not configured - no GA_MEASUREMENT_ID');
+        return;
+    }
+    
+    // Load Google Analytics script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${window.GA_MEASUREMENT_ID}`;
+    document.head.appendChild(script);
+    
+    // Initialize gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', window.GA_MEASUREMENT_ID, {
+        anonymize_ip: true, // GDPR compliance
+        cookie_flags: 'SameSite=Strict;Secure'
+    });
+    
+    console.log('Google Analytics enabled with consent');
+}
+
+// Disable Google Analytics
+function disableGoogleAnalytics() {
+    // Remove gtag function
+    if (window.gtag) {
+        window.gtag = function() {
+            console.log('Google Analytics disabled - no consent');
+        };
+    }
+    
+    // Clear dataLayer
+    if (window.dataLayer) {
+        window.dataLayer = [];
+    }
+    
+    console.log('Google Analytics disabled');
+}

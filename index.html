@@ -663,7 +663,7 @@
                         </div>
                     </div>
                     
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                         <div class="form-group">
                             <label class="form-label" for="name">Име *</label>
                             <input type="text" id="name" name="name" class="form-control" required>
@@ -773,6 +773,64 @@
         </section>
         
     </main>
+
+    <!-- Cookie Consent Popup -->
+    <div id="cookieConsent" class="cookie-consent">
+        <div class="cookie-consent__content">
+            <div class="cookie-consent__text">
+                <h3>🍪 Използваме бисквитки</h3>
+                <p>Използваме бисквитки за да подобрим вашето изживяване на нашия сайт, да анализираме трафика и да персонализираме съдържанието. Можете да изберете кои бисквитки да приемете.</p>
+            </div>
+            <div class="cookie-consent__buttons">
+                <button id="acceptAllCookies" class="btn btn--primary">Приемам всички</button>
+                <button id="acceptNecessaryOnly" class="btn btn--outline">Само необходими</button>
+                <button id="customizeCookies" class="btn btn--outline">Персонализирай</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div id="cookieSettings" class="cookie-settings">
+        <div class="cookie-settings__overlay"></div>
+        <div class="cookie-settings__modal">
+            <div class="cookie-settings__header">
+                <h3>Настройки за бисквитки</h3>
+                <button id="closeCookieSettings" class="cookie-settings__close">&times;</button>
+            </div>
+            <div class="cookie-settings__content">
+                <div class="cookie-settings__section">
+                    <div class="cookie-settings__item">
+                        <div class="cookie-settings__info">
+                            <h4>Необходими бисквитки</h4>
+                            <p>Тези бисквитки са необходими за основното функциониране на сайта и не могат да бъдат деактивирани.</p>
+                        </div>
+                        <div class="cookie-settings__toggle">
+                            <input type="checkbox" id="necessaryCookies" checked disabled>
+                            <label for="necessaryCookies" class="toggle-switch">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="cookie-settings__item">
+                        <div class="cookie-settings__info">
+                            <h4>Аналитични бисквитки</h4>
+                            <p>Помагат ни да разберем как посетителите използват сайта чрез Google Analytics.</p>
+                        </div>
+                        <div class="cookie-settings__toggle">
+                            <input type="checkbox" id="analyticsCookies">
+                            <label for="analyticsCookies" class="toggle-switch">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cookie-settings__footer">
+                <button id="saveCookieSettings" class="btn btn--primary">Запази настройките</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Blog Article Modal -->
     <div class="blog-modal" id="blogModal">
