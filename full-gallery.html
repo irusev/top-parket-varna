@@ -251,22 +251,12 @@
             console.log('Mouse move detected on slider', index + 1);
             handleMouseMove(e);
           });
-          container.addEventListener('mouseleave', () => {
-            console.log('Mouse leave detected on slider', index + 1);
-            // Reset to 50% when mouse leaves
-            updateSliderPosition(container.getBoundingClientRect().width / 2);
-          });
           
           // Touch events for mobile
           container.addEventListener('touchmove', (e) => {
             console.log('Touch move detected on slider', index + 1);
             handleTouchMove(e);
           }, { passive: false });
-          container.addEventListener('touchend', () => {
-            console.log('Touch end detected on slider', index + 1);
-            // Reset to 50% when touch ends
-            updateSliderPosition(container.getBoundingClientRect().width / 2);
-          });
           
           console.log(`Event listeners attached to slider ${index + 1}`);
           

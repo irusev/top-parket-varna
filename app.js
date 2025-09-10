@@ -1233,11 +1233,9 @@ function initSliderDrag() {
         
         // Mouse events
         container.addEventListener('mousemove', handleMouseMove);
-        container.addEventListener('mouseleave', resetSlider);
         
         // Touch events for mobile
         container.addEventListener('touchmove', handleTouchMove, { passive: false });
-        container.addEventListener('touchend', resetSlider);
         
         // Initialize at 50%
         updateSliderPosition(container.getBoundingClientRect().width / 2);
